@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/baseline_dashboard_24"
+        android:title="Dashboard" />
+    <item
+        android:id="@+id/nav_multitimeframe"
+        android:icon="@drawable/baseline_timeline_24"
+        android:title="Multi-TF" />
+    <item
+        android:id="@+id/nav_sinais"
+        android:icon="@drawable/baseline_bar_chart_24"
+        android:title="Sinais" />
+    <item
+        android:id="@+id/nav_alertas"
+        android:icon="@drawable/baseline_barcode_reader_24"
+        android:title="Alertas" />
+    <item
+        android:id="@+id/nav_recomendacoes"
+        android:icon="@drawable/baseline_announcement_24"
+        android:title="Recomendações" />
+</menu>
