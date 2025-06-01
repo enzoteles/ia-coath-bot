@@ -1,6 +1,7 @@
 [versions]
 agp = "8.8.0"
 kotlin = "1.9.24"
+koin = "3.5.3"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -30,4 +31,5 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+koin-android = { id = "io.insert-koin", version.ref = "koin" }
 

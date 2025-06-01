@@ -8,8 +8,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import br.com.coin_project_ia_bot.R
+import br.com.coin_project_ia_bot.presentation.utils.SignalWorker
+import br.com.coin_project_ia_bot.presentation.utils.SignalsAutoScheduler
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +38,9 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.setupWithNavController(navController)
+
+        SignalsAutoScheduler(applicationContext).start()
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

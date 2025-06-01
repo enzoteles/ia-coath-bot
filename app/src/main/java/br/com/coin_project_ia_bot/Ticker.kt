@@ -1,7 +1,5 @@
 package br.com.coin_project_ia_bot
 
-import android.util.Log
-
 data class Ticker(
     val askPrice: String,
     val askQty: String,

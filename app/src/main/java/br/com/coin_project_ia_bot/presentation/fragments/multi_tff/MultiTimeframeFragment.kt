@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.coin_project_ia_bot.databinding.FragmentMultiTimeframeBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MultiTimeFragment : Fragment() {
 
@@ -23,7 +24,7 @@ class MultiTimeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: MultiTimeAdapter
-    private val viewModel: MultiTimeframeViewModel by viewModels()
+    private val multiTimeviewModel: MultiTimeframeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +43,7 @@ class MultiTimeFragment : Fragment() {
         binding.rvMultiTF.adapter = adapter
 
         // Observa os dados
-        viewModel.multiTimeData.observe(viewLifecycleOwner, Observer { list ->
+        multiTimeviewModel.multiTimeData.observe(viewLifecycleOwner, Observer { list ->
             if (list.isNullOrEmpty()) {
                 Toast.makeText(requireContext(), "Sem dados de tendência.", Toast.LENGTH_SHORT).show()
             } else {
@@ -54,7 +55,7 @@ class MultiTimeFragment : Fragment() {
 
         // Carrega os dados
         binding.progressLoading.visibility = View.VISIBLE
-        viewModel.loadMultiTimeDataFromTopSymbols()
+        multiTimeviewModel.loadMultiTimeDataFromTopSymbols()
     }
 
     override fun onDestroyView() {

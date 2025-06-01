@@ -15,6 +15,16 @@
         android:name="br.com.coin_project_ia_bot.presentation.fragments.multi_tff.MultiTimeFragment"
         android:label="Análise Multi-Timeframe" />
 
+    <fragment
+        android:id="@+id/signalsFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.signal.SignalsFragment"
+        android:label="Sinais de Compra" />
+
+    <fragment
+        android:id="@+id/pairSelectionFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.signal.manually.PairSelectionFragment"
+        android:label="Selecionar Pares" />
+
     <!-- outros fragments -->
 
 </navigation>

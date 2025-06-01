@@ -9,15 +9,17 @@
         android:icon="@android:drawable/ic_menu_manage"
         android:title="Multi-TF" />
     <item
-        android:id="@+id/nav_sinais"
+        android:id="@+id/signalsFragment"
         android:icon="@drawable/baseline_bar_chart_24"
         android:title="Sinais" />
+
+    <item
+        android:id="@+id/pairSelectionFragment"
+        android:icon="@drawable/ic_pair"
+        android:title="Pares" />
+
     <item
         android:id="@+id/nav_alertas"
         android:icon="@drawable/baseline_barcode_reader_24"
         android:title="Alertas" />
-    <item
-        android:id="@+id/nav_recomendacoes"
-        android:icon="@drawable/baseline_announcement_24"
-        android:title="Recomendações" />
 </menu>
