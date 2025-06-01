@@ -1,11 +1,12 @@
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_dashboard"
-        android:icon="@drawable/baseline_dashboard_24"
+        android:id="@+id/dashboardFragment"
+        android:icon="@android:drawable/ic_menu_view"
         android:title="Dashboard" />
     <item
-        android:id="@+id/nav_multitimeframe"
-        android:icon="@drawable/baseline_timeline_24"
+        android:id="@+id/multiTimeframeFragment"
+        android:icon="@android:drawable/ic_menu_manage"
         android:title="Multi-TF" />
     <item
         android:id="@+id/nav_sinais"

@@ -15,11 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.coin_project_ia_bot.databinding.FragmentMultiTfBinding
+import br.com.coin_project_ia_bot.databinding.FragmentMultiTimeframeBinding
 
 class MultiTimeFragment : Fragment() {
 
-    private var _binding: FragmentMultiTfBinding? = null
+    private var _binding: FragmentMultiTimeframeBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: MultiTimeAdapter
@@ -30,7 +30,7 @@ class MultiTimeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMultiTfBinding.inflate(inflater, container, false)
+        _binding = FragmentMultiTimeframeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
