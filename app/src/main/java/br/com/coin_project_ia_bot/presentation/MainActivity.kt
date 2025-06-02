@@ -1,8 +1,12 @@
 package br.com.coin_project_ia_bot.presentation
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -33,6 +37,18 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setupWithNavController(navController)
 
         SignalsAutoScheduler(applicationContext).start()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+            }
+        }
+
+        val destination = intent.getStringExtra("navigate_to")
+        if (destination == "pump") {
+            navController.navigate(R.id.pumpAlertFragment)
+        }
 
     }
 

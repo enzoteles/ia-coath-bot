@@ -11,6 +11,7 @@ import br.com.coin_project_ia_bot.presentation.MainActivity
 import br.com.coin_project_ia_bot.presentation.fragments.pump.PumpTicker
 import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer
 import br.com.coin_project_ia_bot.presentation.fragments.signal.TelegramNotifier
+import br.com.coin_project_ia_bot.presentation.utils.PumpNotifier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,8 @@ class PumpAlertViewModel(private val api: BinanceApi) : ViewModel() {
 
                         try {
                             TelegramNotifier.sendMessage(msg)
-                            Toast.makeText(context, "Mgs: $msg", Toast.LENGTH_SHORT).show()
+                            // ⏰ Mostrar notificação local
+                            PumpNotifier.showPumpNotification(context, symbol, change)
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
