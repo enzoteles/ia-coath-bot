@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/dashboardFragment"
-        android:icon="@android:drawable/ic_menu_view"
+        android:icon="@drawable/baseline_dashboard_24"
         android:title="Dashboard" />
     <item
         android:id="@+id/multiTimeframeFragment"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/ic_multi_time_frame"
         android:title="Multi-TF" />
     <item
         android:id="@+id/signalsFragment"
-        android:icon="@drawable/baseline_bar_chart_24"
+        android:icon="@drawable/ic_sinais_buy"
         android:title="Sinais" />
 
     <item
@@ -18,8 +18,14 @@
         android:icon="@drawable/ic_pair"
         android:title="Pares" />
 
-    <item
-        android:id="@+id/nav_alertas"
+    <!--item
+        android:id="@+id/pumpFragment"
         android:icon="@drawable/baseline_barcode_reader_24"
-        android:title="Alertas" />
+        android:title="Pump" /-->
+
+    <item
+        android:id="@+id/pumpAlertFragment"
+        android:icon="@drawable/ic_pump_alert"
+        android:title="Alertas Pump" />
+
 </menu>

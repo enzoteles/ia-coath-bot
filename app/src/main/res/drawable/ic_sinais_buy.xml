@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Candlestick chart -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M4,4h2v16H4V4zM8,7h2v13H8V7zM12,3h2v17h-2V3zM16,6h2v14h-2V6z"/>
+
+    <!-- Dollar circle -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M18,13a4,4 0 1,0 0,8 4,4 0 1,0 0,-8zm0.5,6h-1v-0.5h-0.5v-1h1v-0.5h-1c-0.3,0 -0.5,-0.2 -0.5,-0.5v-1c0,-0.3 0.2,-0.5 0.5,-0.5h1v-0.5h1v0.5h0.5v1h-1v0.5h1c0.3,0 0.5,0.2 0.5,0.5v1c0,0.3 -0.2,0.5 -0.5,0.5h-1V19z"/>
+
+    <!-- Upward arrow -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M2,18l8,-8l4,4l6,-6v4h2v-8h-8v2h4l-5,5l-4,-4l-9,9z"/>
+
+</vector>
