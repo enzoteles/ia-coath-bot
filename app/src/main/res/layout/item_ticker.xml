@@ -19,36 +19,36 @@
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tvChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tvVolume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tvHighLow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tvBidAsk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

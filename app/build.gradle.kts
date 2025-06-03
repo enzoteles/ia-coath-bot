@@ -65,7 +65,11 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation ("androidx.work:work-runtime-ktx:2.9.0")
 
+    implementation("io.insert-koin:koin-core:3.5.3")
+    implementation("io.insert-koin:koin-android:3.5.3")
+    implementation("androidx.core:core-ktx:1.12.0")
 
 
 }

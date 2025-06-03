@@ -1,35 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:elevation="4dp">
+    android:layout_margin="@dimen/card_margin"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:strokeColor="?attr/colorOutline"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="?attr/colorSurface">
 
     <LinearLayout
         android:id="@+id/llmain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/card_padding">
 
-        <TextView android:id="@+id/symbol" android:textSize="18sp" android:textStyle="bold"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textColor="@android:color/black" />
+        <!-- Nome da moeda -->
+        <TextView
+            android:id="@+id/symbol"
+            android:text="BTCUSDT"
+            android:textColor="?attr/colorOnSurface" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 
-        <TextView android:id="@+id/lastPrice" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/lastPrice"
+            android:text="Último: $67.500"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:textColor="?attr/colorOnSurfaceVariant" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 
-        <TextView android:id="@+id/change" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:textColor="@android:color/black" />
+        <!-- Variação percentual -->
+        <TextView
+            android:id="@+id/change"
+            android:text="+2.45%"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:textColor="@color/colorGreen" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 
-        <TextView android:id="@+id/volume" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:textColor="@android:color/black" />
+        <!-- Volume -->
+        <TextView
+            android:id="@+id/volume"
+            android:text="Vol: $1.2B"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:textColor="?attr/colorOnSurfaceVariant" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 
-        <TextView android:id="@+id/highLow" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:textColor="@android:color/black" />
+        <!-- Alta/Baixa -->
+        <TextView
+            android:id="@+id/highLow"
+            android:text="Alta: $69K / Baixa: $66K"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:textColor="?attr/colorOnSurfaceVariant" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 
-        <TextView android:id="@+id/bidAsk" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:textColor="@android:color/black" />
+        <!-- Bid/Ask -->
+        <TextView
+            android:id="@+id/bidAsk"
+            android:text="Bid: $67.480 / Ask: $67.520"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:textColor="?attr/colorOnSurfaceVariant"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

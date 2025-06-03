@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.coin_project_ia_bot.databinding.ItemMultiTfBinding
+import br.com.coin_project_ia_bot.domain.model.MultiTFResult
 
 class MultiTFAdapter : ListAdapter<MultiTFResult, MultiTFAdapter.ViewHolder>(
     object : DiffUtil.ItemCallback<MultiTFResult>() {

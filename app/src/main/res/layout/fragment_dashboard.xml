@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dashboard_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:background="@color/colorBackground"
+    tools:context=".presentation.fragments.dashboard.DashboardFragment">
 
-    <!-- Título (opcional) -->
+    <!-- Título fixo do dashboard -->
     <TextView
         android:id="@+id/tvDashboardTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dashboard de Moedas"
+        android:text="🏆 Ranking de Moedas"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:paddingBottom="8dp" />
+        android:padding="16dp"
+        android:textColor="@color/colorTextPrimary"
+        android:background="@color/colorSurface" />
 
+    <!-- Conteúdo principal com lista e loading -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp">
 
-        <!-- Barra de progresso para quando estiver carregando -->
+        <!-- Barra de progresso -->
         <ProgressBar
             android:id="@+id/progressLoading"
-            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <!-- RecyclerView para exibir os tickers pontuados -->
+        <!-- Lista de moedas -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDashboard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:clipToPadding="false"
-            android:paddingBottom="8dp" />
-
-
-
+            android:padding="12dp"
+            android:scrollbars="vertical" />
     </FrameLayout>
 
-
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

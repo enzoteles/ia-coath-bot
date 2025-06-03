@@ -1,58 +1,63 @@
 package br.com.coin_project_ia_bot.presentation
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import br.com.coin_project_ia_bot.R
-import br.com.coin_project_ia_bot.databinding.ActivityMainBinding
-import br.com.coin_project_ia_bot.presentation.fragments.dashboard.DashboardFragment
-import br.com.coin_project_ia_bot.presentation.fragments.multi_tff.MultiTFFragment
+import br.com.coin_project_ia_bot.presentation.utils.SignalsAutoScheduler
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
-    private lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navView = findViewById(R.id.navView)
-
-        navController = supportFragmentManager.findFragmentById(R.id.navHostFragment)!!
-            .findNavController()
-
-        // Toolbar
-        val toolbar = findViewById<Toolbar>(R.id.topAppBar)
+        val toolbar: Toolbar = findViewById(R.id.topAppBar)
         setSupportActionBar(toolbar)
 
-        // Configura Drawer Toggle no Toolbar
-        val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        navController = navHostFragment.navController
 
-        // Listener para troca via menu lateral
-        navView.setNavigationItemSelectedListener { menuItem ->
-            when(menuItem.itemId) {
-                R.id.nav_dashboard -> navController.navigate(R.id.dashboardFragment)
-                R.id.nav_multitime -> navController.navigate(R.id.multiTimeframeFragment)
-                // outros casos
+        val appBarConfig = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.multiTimeframeFragment, R.id.dashboardFragment, R.id.dashboardFragment, R.id.dashboardFragment))
+        setupActionBarWithNavController(navController, appBarConfig)
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.setupWithNavController(navController)
+
+        SignalsAutoScheduler(applicationContext).start()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
         }
+
+        val destination = intent.getStringExtra("navigate_to")
+        if (destination == "pump") {
+            navController.navigate(R.id.pumpAlertFragment)
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+    companion object{
+        const val USDT = "USDT"
+    }
 }
+

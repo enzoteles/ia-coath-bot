@@ -1,22 +1,36 @@
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_dashboard"
+        android:id="@+id/dashboardFragment"
         android:icon="@drawable/baseline_dashboard_24"
         android:title="Dashboard" />
     <item
-        android:id="@+id/nav_multitimeframe"
-        android:icon="@drawable/baseline_timeline_24"
+        android:id="@+id/multiTimeframeFragment"
+        android:icon="@drawable/ic_multi_time_frame"
         android:title="Multi-TF" />
     <item
-        android:id="@+id/nav_sinais"
-        android:icon="@drawable/baseline_bar_chart_24"
+        android:id="@+id/signalsFragment"
+        android:icon="@drawable/ic_sinais_buy"
         android:title="Sinais" />
-    <item
-        android:id="@+id/nav_alertas"
+
+    <!--item
+        android:id="@+id/pairSelectionFragment"
+        android:icon="@drawable/ic_pair"
+        android:title="Pares" /-->
+
+    <!--item
+        android:id="@+id/pumpFragment"
         android:icon="@drawable/baseline_barcode_reader_24"
-        android:title="Alertas" />
+        android:title="Pump" /-->
+
     <item
-        android:id="@+id/nav_recomendacoes"
-        android:icon="@drawable/baseline_announcement_24"
+        android:id="@+id/pumpAlertFragment"
+        android:icon="@drawable/ic_pump_alert"
+        android:title="Alertas Pump" />
+
+    <item
+        android:id="@+id/coachRecommendFragment"
+        android:icon="@drawable/ic_recommend_shield"
         android:title="Recomendações" />
+
 </menu>

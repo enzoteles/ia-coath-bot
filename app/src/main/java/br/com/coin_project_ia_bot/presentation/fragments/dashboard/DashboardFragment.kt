@@ -8,9 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.coin_project_ia_bot.MainViewModel
-import androidx.fragment.app.viewModels
 import br.com.coin_project_ia_bot.databinding.FragmentDashboardBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment : Fragment() {
 
@@ -19,10 +18,10 @@ class DashboardFragment : Fragment() {
     private val binding get() = _binding!!
 
     // Declare o Adapter aqui
-    private lateinit var adapter: CoinCoachAdapter
+    private lateinit var adapter: DashboardAdapter
 
     // Declare o ViewModel (você pode usar ViewModelProvider ou KTX)
-    private val viewModel: MainViewModel by viewModels()
+    private val mainViewModel: DashboardViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,17 +38,17 @@ class DashboardFragment : Fragment() {
 
         // Configura RecyclerView com LayoutManager e Adapter vazio inicialmente
         binding.rvDashboard.layoutManager = LinearLayoutManager(requireContext())
-        adapter = CoinCoachAdapter(emptyList())
+        adapter = DashboardAdapter(emptyList())
         binding.rvDashboard.adapter = adapter
 
         // Observa os dados do ViewModel
-        viewModel.tickersLiveData.observe(viewLifecycleOwner, Observer { scoredList ->
+        mainViewModel.tickersLiveData.observe(viewLifecycleOwner, Observer { scoredList ->
             if (scoredList.isNullOrEmpty()) {
                 // Se quiser, exiba mensagem de nenhum dado
                 Toast.makeText(requireContext(), "Nenhuma moeda pontuada no momento", Toast.LENGTH_SHORT).show()
             }
             // Atualiza o adapter com a nova lista
-            adapter = CoinCoachAdapter(scoredList)
+            adapter = DashboardAdapter(scoredList)
             binding.rvDashboard.adapter = adapter
 
             // Esconde o ProgressBar
@@ -60,7 +59,7 @@ class DashboardFragment : Fragment() {
         binding.progressLoading.visibility = View.VISIBLE
 
         // Chama o ViewModel para buscar e pontuar os tickers
-        viewModel.fetchAndScoreTickers()
+        mainViewModel.fetchAndScoreTickers()
     }
 
     override fun onDestroyView() {

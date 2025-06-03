@@ -15,6 +15,29 @@
         android:name="br.com.coin_project_ia_bot.presentation.fragments.multi_tff.MultiTimeFragment"
         android:label="Análise Multi-Timeframe" />
 
-    <!-- outros fragments -->
+    <fragment
+        android:id="@+id/signalsFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.signal.SignalsFragment"
+        android:label="Sinais de Compra" />
+
+    <fragment
+        android:id="@+id/pairSelectionFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.signal.manually.PairSelectionFragment"
+        android:label="Selecionar Pares" />
+
+    <fragment
+        android:id="@+id/pumpFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.pump.PumpFragment"
+        android:label="Pump" />
+
+    <!--fragment
+        android:id="@+id/pumpAlertFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.pump.alert.PumpAlertFragment"
+        android:label="Alertas de Pump" /-->
+
+    <fragment
+        android:id="@+id/coachRecommendFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.recommend.CoachRecommendFragment"
+        android:label="Coach Recomenda" />
 
 </navigation>

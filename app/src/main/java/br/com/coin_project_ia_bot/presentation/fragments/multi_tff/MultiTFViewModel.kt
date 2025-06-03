@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.coin_project_ia_bot.RetrofitInstance
 import br.com.coin_project_ia_bot.Ticker
+import br.com.coin_project_ia_bot.domain.model.MultiTFResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

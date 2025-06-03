@@ -1,9 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.CoinProjectIAbot" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme.CoachCoin" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customizações -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <!-- etc -->
     </style>
-
-    <style name="Theme.CoinProjectIAbot" parent="Base.Theme.CoinProjectIAbot" />
 </resources>
