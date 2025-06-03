@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- styles.xml (tipografia e componentes) -->
+<resources>
+    <style name="Text.Title" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:textColor">@color/onBackground</item>
+    </style>
+    <style name="Text.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/onBackground</item>
+    </style>
+    <style name="Text.Label" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">@color/onSurfaceVariant</item>
+    </style>
+    <style name="Button.Filled" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/onPrimary</item>
+    </style>
+    <style name="Card.Elevated" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">12dp</item>
+    </style>
+</resources>

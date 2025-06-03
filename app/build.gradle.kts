@@ -71,5 +71,6 @@ dependencies {
     implementation("io.insert-koin:koin-android:3.5.3")
     implementation("androidx.core:core-ktx:1.12.0")
 
-
+    implementation ("androidx.compose.material3:material3:1.2.0") // Para Compose
+    implementation ("com.google.android.material:material:1.10.0") // Para Views (XML)
 }

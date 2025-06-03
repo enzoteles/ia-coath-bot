@@ -4,7 +4,7 @@
     android:id="@+id/dashboard_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="?android:attr/colorBackground"
     tools:context=".presentation.fragments.dashboard.DashboardFragment">
 
     <!-- Título fixo do dashboard -->
@@ -13,11 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="🏆 Ranking de Moedas"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:padding="16dp"
-        android:textColor="@color/colorTextPrimary"
-        android:background="@color/colorSurface" />
+        style="@style/Text.Title"
+        />
 
     <!-- Conteúdo principal com lista e loading -->
     <FrameLayout
