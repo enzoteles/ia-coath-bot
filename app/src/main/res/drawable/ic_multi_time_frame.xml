@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Multi-timeframe bars -->
+    <path android:fillColor="#2196F3" android:pathData="M3,9h2v12H3z" />
+    <path android:fillColor="#4CAF50" android:pathData="M7,6h2v15H7z" />
+    <path android:fillColor="#FF9800" android:pathData="M11,3h2v18h-2z" />
+    <path android:fillColor="#9C27B0" android:pathData="M15,10h2v11h-2z" />
+    <path android:fillColor="#F44336" android:pathData="M19,5h2v16h-2z" />
+
+    <!-- Clock circle (outline) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#555555"
+        android:strokeWidth="1.5"
+        android:pathData="M12,8.5a3.5,3.5 0 1,1 0,7a3.5,3.5 0 1,1 0,-7" />
+
+    <!-- Clock hands -->
+    <path android:strokeColor="#555555" android:strokeWidth="1.2"
+        android:pathData="M12,12L12,10" />
+    <path android:strokeColor="#555555" android:strokeWidth="1.2"
+        android:pathData="M12,12L13.5,12" />
+
+</vector>
