@@ -21,5 +21,7 @@ data class Ticker(
     val quoteVolume: String,
     val symbol: String,
     val volume: String,
-    val weightedAvgPrice: String
+    val weightedAvgPrice: String,
+    val rsi: Float? = null,
+    val bullishCount: Int? = null
 )

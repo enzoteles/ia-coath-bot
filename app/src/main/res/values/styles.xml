@@ -8,10 +8,16 @@
         <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
 
-    <style name="Text.Subtitle" parent="TextAppearance.Material3.BodyLarge">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
+    <!-- Estilo base para textos (tema claro) -->
+    <style name="Text" parent="TextAppearance.Material3.BodyLarge">
+        <!-- Cor do texto adaptada ao tema (ex.: quase preto no claro) -->
         <item name="android:textColor">?attr/colorOnSurface</item>
+        <!-- Tamanho da fonte (Material3 bodyLarge ~16sp) -->
+        <item name="android:textSize">16sp</item>
+        <!-- Família da fonte sans-serif padrão (ex.: Roboto) -->
+        <item name="android:fontFamily">sans-serif</item>
+        <!-- Padding padrão opcional para dar espaçamento interno ao TextView -->
+        <item name="android:padding">4dp</item>
     </style>
 
     <style name="Text.Body" parent="TextAppearance.Material3.BodyMedium">
@@ -22,14 +28,6 @@
     <style name="Text.Label" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
-    </style>
-
-    <!-- CardView Style -->
-    <style name="Widget.CoinCard" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardCornerRadius">12dp</item>
-        <item name="cardElevation">4dp</item>
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:backgroundTint">?attr/colorSurface</item>
     </style>
 
     <!-- Button Style -->
@@ -46,6 +44,35 @@
         <item name="chipStrokeWidth">1dp</item>
         <item name="chipCornerRadius">8dp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <!-- Card padrão reutilizável -->
+    <style name="Widget.CoinCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Texto para símbolo da moeda -->
+    <style name="Text.Symbol">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Texto padrão secundário -->
+    <style name="Text.Secondary">
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- Texto para variação positiva -->
+    <style name="Text.PositiveChange">
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorGreen</item>
     </style>
 
 </resources>

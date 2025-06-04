@@ -2,6 +2,8 @@
 <!-- styles.xml (tipografia e componentes) -->
 <resources>
     <style name="Text.Title" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/onBackground</item>
     </style>
     <style name="Text.Body" parent="TextAppearance.Material3.BodyMedium">
@@ -14,8 +16,44 @@
         <item name="android:backgroundTint">@color/primary</item>
         <item name="android:textColor">@color/onPrimary</item>
     </style>
-    <style name="Card.Elevated" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardElevation">4dp</item>
-        <item name="cardCornerRadius">12dp</item>
+
+    <!-- Estilo base para textos (tema escuro) -->
+    <style name="Text" parent="TextAppearance.Material3.BodyLarge">
+        <!-- Cor do texto apropriada para modo escuro (ex.: quase branca) -->
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <!-- Mantém demais atributos iguais ao tema claro -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:padding">4dp</item>
     </style>
+
+    <!-- Card padrão reutilizável no tema escuro -->
+    <style name="Widget.CoinCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Texto para símbolo da moeda -->
+    <style name="Text.Symbol">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Texto padrão secundário -->
+    <style name="Text.Secondary">
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- Texto para variação positiva -->
+    <style name="Text.PositiveChange">
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorGreen</item>
+    </style>
+
 </resources>
