@@ -14,7 +14,7 @@ data class TickerAnalysis(
 fun analyzeTicker(
     ticker: Ticker,
     closes: List<Float>,
-    candles: List<Candle>
+    candles: List<List<String>>?
 ): TickerAnalysis {
     val change = ticker.priceChangePercent.toFloatOrNull() ?: return TickerAnalysis(ticker, 0, null, 0, 0f)
     val volume = ticker.volume.toFloatOrNull() ?: return TickerAnalysis(ticker, 0, null, 0, change)
@@ -24,7 +24,7 @@ fun analyzeTicker(
     val priceRange = if (price != 0f) (high - low) / price else 0f
 
     val rsi = calculateRSI(closes)
-    val bullishCount = countBullishCandles(candles)
+    val bullishCount = countBullishCandles(parseCandles(candles!!) )
 
     var score = 0
 
@@ -78,6 +78,27 @@ fun calculateRSI(closes: List<Float>, period: Int = 14): Float? {
 fun countBullishCandles(candles: List<Candle>, limit: Int = 5): Int {
     return candles.takeLast(limit).count { it.close > it.open }
 }
+
+
+fun parseCandles(rawKlines: List<List<String>>): List<Candle> {
+    return rawKlines.mapNotNull { kline ->
+        try {
+            if (kline.size >= 6) {
+                val open = kline[1].toFloat()
+                val high = kline[2].toFloat()
+                val low = kline[3].toFloat()
+                val close = kline[4].toFloat()
+                val volume = kline[5].toFloat()
+
+                Candle(open, high, low, close, volume)
+            } else null
+        } catch (e: Exception) {
+            null // ignora candles malformados
+        }
+    }
+}
+
+
 
 
 

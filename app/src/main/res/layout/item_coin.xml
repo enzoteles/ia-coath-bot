@@ -39,47 +39,70 @@
                 android:layout_height="40dp"
                 android:src="@drawable/ic_upward"
                 android:layout_marginStart="8dp"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/lastPrice"
             style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             android:text="Último: $67.500" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/change"
             style="@style/Text.PositiveChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="+2.45%" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/volume"
             style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             android:text="Vol: $1.2B" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/highLow"
             style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="Alta: $69K / Baixa: $66K" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/bidAsk"
             style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="Bid: $67.480 / Ask: $67.520" />
+
+        <!-- NOVOS CAMPOS ADICIONADOS -->
+        <TextView
+            android:id="@+id/score"
+            style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:text="Score: 8/10" />
+
+        <TextView
+            android:id="@+id/rsi"
+            style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RSI: 64.3" />
+
+        <TextView
+            android:id="@+id/bullishCount"
+            style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Candles de Alta: 4" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

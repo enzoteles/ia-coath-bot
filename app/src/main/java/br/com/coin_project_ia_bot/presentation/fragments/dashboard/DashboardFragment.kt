@@ -13,14 +13,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment : Fragment() {
 
-    // Binding gerado automaticamente (ViewBinding)
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    // Declare o Adapter aqui
     private lateinit var adapter: DashboardAdapter
 
-    // Declare o ViewModel (você pode usar ViewModelProvider ou KTX)
     private val mainViewModel: DashboardViewModel by viewModel()
 
     override fun onCreateView(
@@ -28,7 +25,6 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Infla o layout via ViewBinding
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,29 +32,22 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configura RecyclerView com LayoutManager e Adapter vazio inicialmente
         binding.rvDashboard.layoutManager = LinearLayoutManager(requireContext())
-        adapter = DashboardAdapter(emptyList())
+        adapter = DashboardAdapter(emptyList()) // Começa vazio
         binding.rvDashboard.adapter = adapter
 
-        // Observa os dados do ViewModel
-        mainViewModel.tickersLiveData.observe(viewLifecycleOwner, Observer { scoredList ->
-            if (scoredList.isNullOrEmpty()) {
-                // Se quiser, exiba mensagem de nenhum dado
-                Toast.makeText(requireContext(), "Nenhuma moeda pontuada no momento", Toast.LENGTH_SHORT).show()
+        // Observa a nova lista com análise
+        mainViewModel.analyzedTickers.observe(viewLifecycleOwner) { analysisList ->
+            if (analysisList.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "Nenhuma moeda com pontuação", Toast.LENGTH_SHORT).show()
+            } else {
+                adapter.updateList(analysisList)
             }
-            // Atualiza o adapter com a nova lista
-            adapter = DashboardAdapter(scoredList)
-            binding.rvDashboard.adapter = adapter
 
-            // Esconde o ProgressBar
             binding.progressLoading.visibility = View.GONE
-        })
+        }
 
-        // Exibe ProgressBar enquanto carrega
         binding.progressLoading.visibility = View.VISIBLE
-
-        // Chama o ViewModel para buscar e pontuar os tickers
         mainViewModel.fetchAndScoreTickers()
     }
 
@@ -67,3 +56,4 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 }
+
