@@ -11,7 +11,6 @@ import br.com.coin_project_ia_bot.presentation.MainActivity
 import kotlinx.coroutines.launch
 
 class DashboardViewModel : ViewModel() {
-    val tickersLiveData = MutableLiveData<List<Ticker>>()
     private val _analyzedTickers = MutableLiveData<List<TickerAnalysis>>()
     val analyzedTickers: LiveData<List<TickerAnalysis>> = _analyzedTickers
 
@@ -29,16 +28,15 @@ class DashboardViewModel : ViewModel() {
                     val candles = getCandlesForTicker(ticker.symbol)
 
                     if (closes != null && candles != null) {
-                        val analysis = analyzeTicker(ticker, closes, candles)
-                        if (analysis.score > 0) {
+                        val analysis = analyzeTicker(ticker, closes, parseCandles(candles))
+                        if (analysis.score >= 7) {
                             analyses.add(analysis)
                         }
                     }
                 }
 
                 val sorted = analyses.sortedByDescending { it.score }
-
-                _analyzedTickers.value = sorted // LiveData<List<TickerAnalysis>>
+                _analyzedTickers.value = sorted
 
             } catch (e: Exception) {
                 Log.e("ViewModel", "Erro: ${e.message}")
@@ -46,37 +44,11 @@ class DashboardViewModel : ViewModel() {
         }
     }
 
-
-    private fun calculateScore(ticker: Ticker): Int {
-        val change = ticker.priceChangePercent.toFloatOrNull() ?: return 0
-        val volume = ticker.volume.toFloatOrNull() ?: return 0
-        val price = ticker.lastPrice.toFloatOrNull() ?: return 0
-
-        val priceRange = (ticker.highPrice.toFloatOrNull() ?: 0f) -
-                (ticker.lowPrice.toFloatOrNull() ?: 0f)
-
-        // Regras para pontuar
-        return when {
-            change >= 2 && change <= 5 && volume > 500000 -> 5
-            change > 5 && priceRange / price > 0.03 -> 10 // possível pump
-            else -> 0
-        }
-    }
-
-    fun analyzeAllTickers() {
-        viewModelScope.launch {
-            val tickers = RetrofitInstance.api.getTickers()
-            val usdtTickers = tickers.filter { it.symbol.endsWith("USDT") }
-
-            val analyzed = usdtTickers.mapNotNull { ticker ->
-                val closes = getClosesForTicker(ticker.symbol)
-                val candles = getCandlesForTicker(ticker.symbol)
-                if (closes != null && candles != null) {
-                    analyzeTicker(ticker, closes, candles)
-                } else null
-            }.sortedByDescending { it.score }
-
-            _analyzedTickers.postValue(analyzed)
+    private suspend fun getCandlesForTicker(symbol: String): List<List<String>>? {
+        return try {
+            RetrofitInstance.api.getKlines(symbol, "1h", 50)
+        } catch (e: Exception) {
+            null
         }
     }
 
@@ -86,14 +58,6 @@ class DashboardViewModel : ViewModel() {
                 .mapNotNull { (it.getOrNull(4) as? String)?.toFloatOrNull() }
         } catch (e: Exception) {
             emptyList()
-        }
-    }
-
-    private suspend fun getCandlesForTicker(symbol: String): List<List<String>>? {
-        return try {
-            RetrofitInstance.api.getKlines(symbol, "1h", 50)
-        } catch (e: Exception) {
-            null
         }
     }
 }

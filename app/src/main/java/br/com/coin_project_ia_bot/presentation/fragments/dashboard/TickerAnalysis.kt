@@ -14,7 +14,7 @@ data class TickerAnalysis(
 fun analyzeTicker(
     ticker: Ticker,
     closes: List<Float>,
-    candles: List<List<String>>?
+    candles: List<Candle>
 ): TickerAnalysis {
     val change = ticker.priceChangePercent.toFloatOrNull() ?: return TickerAnalysis(ticker, 0, null, 0, 0f)
     val volume = ticker.volume.toFloatOrNull() ?: return TickerAnalysis(ticker, 0, null, 0, change)
@@ -24,29 +24,24 @@ fun analyzeTicker(
     val priceRange = if (price != 0f) (high - low) / price else 0f
 
     val rsi = calculateRSI(closes)
-    val bullishCount = countBullishCandles(parseCandles(candles!!) )
+    val bullishCount = countBullishCandles(candles)
 
     var score = 0
 
-    // Variação positiva
     if (change >= 2f && change <= 5f) score += 3
     else if (change > 5f) score += 4
 
-    // Volume relevante
     if (volume > 1_000_000f) score += 2
     else if (volume > 500_000f) score += 1
 
-    // RSI mostrando força compradora
     if (rsi != null) {
         if (rsi in 55f..70f) score += 1
         else if (rsi > 70f) score += 2
     }
 
-    // Candles de alta
     if (bullishCount >= 3) score += 1
     if (bullishCount >= 5) score += 2
 
-    // Amplitude de preço
     if (priceRange > 0.03f) score += 1
 
     return TickerAnalysis(
@@ -57,6 +52,7 @@ fun analyzeTicker(
         change = change
     )
 }
+
 fun calculateRSI(closes: List<Float>, period: Int = 14): Float? {
     if (closes.size <= period) return null
 
