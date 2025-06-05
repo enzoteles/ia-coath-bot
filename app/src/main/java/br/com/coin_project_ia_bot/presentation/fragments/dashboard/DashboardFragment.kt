@@ -8,17 +8,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import br.com.coin_project_ia_bot.databinding.FragmentDashboardBinding
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.chart.ChartFragment
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.star.StarFragment
+import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var adapter: DashboardAdapter
-
-    private val mainViewModel: DashboardViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,24 +32,24 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvDashboard.layoutManager = LinearLayoutManager(requireContext())
-        adapter = DashboardAdapter(emptyList()) // Começa vazio
-        binding.rvDashboard.adapter = adapter
+        val fragments = listOf(
+            StarFragment(),
+            ChartFragment()
+        )
+        val titles = listOf("Pump Coins", "Gráfico")
 
-        // Observa a nova lista com análise
-        mainViewModel.analyzedTickers.observe(viewLifecycleOwner) { analysisList ->
-            if (analysisList.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "Nenhuma moeda com pontuação", Toast.LENGTH_SHORT).show()
-            } else {
-                adapter.updateList(analysisList)
-            }
-
-            binding.progressLoading.visibility = View.GONE
+        val adapter = object : FragmentStateAdapter(this) {
+            override fun getItemCount() = fragments.size
+            override fun createFragment(position: Int) = fragments[position]
         }
 
-        binding.progressLoading.visibility = View.VISIBLE
-        mainViewModel.fetchAndScoreTickers()
+        binding.viewPager.adapter = adapter
+
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = titles[position]
+        }.attach()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -73,4 +73,5 @@ dependencies {
 
     implementation ("androidx.compose.material3:material3:1.2.0") // Para Compose
     implementation ("com.google.android.material:material:1.10.0") // Para Views (XML)
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
