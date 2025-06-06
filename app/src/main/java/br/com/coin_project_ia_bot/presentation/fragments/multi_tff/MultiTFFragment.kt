@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.coin_project_ia_bot.databinding.FragmentMultiTfBinding
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.TickerAnalysis
 
 class MultiTFFragment : Fragment() {
 
@@ -35,10 +36,19 @@ class MultiTFFragment : Fragment() {
 
         viewModel.multiTFData.observe(viewLifecycleOwner) { list ->
             adapter.submitList(list)
+            binding.progressLoading.visibility = View.GONE
+               // viewModel.analyzeInvestmentDay(List<TickerAnalysis>)
+        }
+
+        viewModel.investmentSignal.observe(viewLifecycleOwner) { signal ->
+            binding.tvTitle.text = signal
         }
 
         // Atualiza a cada X minutos (ex: 3 min)
         viewModel.startAutoUpdate(intervalMillis = 3 * 60 * 1000)
+
+
+
     }
 
     override fun onDestroyView() {

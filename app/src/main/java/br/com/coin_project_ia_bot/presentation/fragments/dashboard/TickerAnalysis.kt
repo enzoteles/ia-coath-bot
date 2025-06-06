@@ -1,5 +1,6 @@
 package br.com.coin_project_ia_bot.presentation.fragments.dashboard
 
+import br.com.coin_project_ia_bot.RetrofitInstance
 import br.com.coin_project_ia_bot.Ticker
 import br.com.coin_project_ia_bot.domain.model.Candle
 
@@ -8,7 +9,8 @@ data class TickerAnalysis(
     val score: Int,
     val rsi: Float?,
     val bullishCount: Int,
-    val change: Float
+    val change: Float,
+    val consistency: String? = null // adicionado
 )
 
 fun analyzeTicker(
@@ -22,6 +24,8 @@ fun analyzeTicker(
     val high = ticker.highPrice.toFloatOrNull() ?: 0f
     val low = ticker.lowPrice.toFloatOrNull() ?: 0f
     val priceRange = if (price != 0f) (high - low) / price else 0f
+    val consistency = calculateConsistency(ticker.rsi, ticker.bullishCount!!, change, volume)
+
 
     val rsi = calculateRSI(closes)
     val bullishCount = countBullishCandles(candles)
@@ -49,7 +53,8 @@ fun analyzeTicker(
         score = score.coerceAtMost(10),
         rsi = rsi,
         bullishCount = bullishCount,
-        change = change
+        change = change,
+        consistency = consistency
     )
 }
 
@@ -93,6 +98,48 @@ fun parseCandles(rawKlines: List<List<String>>): List<Candle> {
         }
     }
 }
+
+suspend fun getCandlesForTicker(symbol: String): List<List<String>>? {
+    return try {
+        RetrofitInstance.api.getKlines(symbol, "1h", 50)
+    } catch (e: Exception) {
+        null
+    }
+}
+
+suspend fun getClosesForTicker(symbol: String): List<Float> {
+    return try {
+        RetrofitInstance.api.getKlines(symbol, "1h", 50)
+            .mapNotNull { (it.getOrNull(4) as? String)?.toFloatOrNull() }
+    } catch (e: Exception) {
+        emptyList()
+    }
+}
+
+fun calculateConsistency(
+    rsi: Float?,
+    bullishCount: Int,
+    change: Float,
+    volume: Float
+): String {
+    return when {
+        // Alta consistência
+        (rsi != null && rsi in 55f..70f) &&
+                bullishCount >= 3 &&
+                change in 2f..5f &&
+                volume > 500_000 -> "Alta Consistência ✅"
+
+        // Média consistência
+        (rsi != null && rsi in 50f..55f) &&
+                bullishCount >= 2 &&
+                change > 1.5f &&
+                volume > 250_000 -> "Consistência Moderada ⚠️"
+
+        // Baixa ou instável
+        else -> "Baixa Consistência ⚠️"
+    }
+}
+
 
 
 

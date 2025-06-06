@@ -43,21 +43,4 @@ class DashboardViewModel : ViewModel() {
             }
         }
     }
-
-    private suspend fun getCandlesForTicker(symbol: String): List<List<String>>? {
-        return try {
-            RetrofitInstance.api.getKlines(symbol, "1h", 50)
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    suspend fun getClosesForTicker(symbol: String): List<Float> {
-        return try {
-            RetrofitInstance.api.getKlines(symbol, "1h", 50)
-                .mapNotNull { (it.getOrNull(4) as? String)?.toFloatOrNull() }
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
 }
