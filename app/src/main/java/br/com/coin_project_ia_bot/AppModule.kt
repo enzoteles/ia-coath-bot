@@ -1,6 +1,7 @@
 package br.com.coin_project_ia_bot
 
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.DashboardViewModel
+import br.com.coin_project_ia_bot.presentation.fragments.multi_tff.MultiTFViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.multi_tff.MultiTimeframeViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.pump.PumpViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.pump.alert.PumpAlertViewModel
@@ -15,6 +16,7 @@ val appModule = module {
     single<BinanceApi> { BinanceApiImpl() }
     viewModel { DashboardViewModel() }
     viewModel { MultiTimeframeViewModel() }
+    viewModel { MultiTFViewModel() }
     viewModel { SharedPairsViewModel() }
     viewModel { SignalsViewModel(get(), get()) }
     viewModel { PumpViewModel(get()) }

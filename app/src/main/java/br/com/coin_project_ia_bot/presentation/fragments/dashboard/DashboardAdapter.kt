@@ -41,9 +41,18 @@ class DashboardAdapter(private var analyses: List<TickerAnalysis>) :
             val low = ticker.lowPrice.toFloatOrNull() ?: 0f
             val rangePercent = if (price != 0f) (high - low) / price else 0f
 
+            when (analyses.consistency) {
+                "Alta Consistência ✅" -> {
+                    binding.consistencyBadge.text = "Alta Consistência"
+                    binding.consistencyBadge.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.consistencyBadge.visibility = View.GONE
+                }
+            }
 
             // Status visual via ícone
-            when {
+            /*when {
 
                 analyses.score in 7..10 &&
                         (analyses.rsi ?: 0f) in 55f..70f &&
@@ -89,7 +98,7 @@ class DashboardAdapter(private var analyses: List<TickerAnalysis>) :
                     binding.llmain.visibility = View.GONE
                     binding.statusIcon.visibility = View.GONE
                 }
-            }
+            }*/
 
         }
     }

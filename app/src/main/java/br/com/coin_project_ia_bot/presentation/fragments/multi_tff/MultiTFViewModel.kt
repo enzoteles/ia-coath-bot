@@ -1,5 +1,6 @@
 package br.com.coin_project_ia_bot.presentation.fragments.multi_tff
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import br.com.coin_project_ia_bot.RetrofitInstance
 import br.com.coin_project_ia_bot.Ticker
 import br.com.coin_project_ia_bot.domain.model.MultiTFResult
+import br.com.coin_project_ia_bot.presentation.MainActivity
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.TickerAnalysis
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.analyzeTicker
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.calculateRSI
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.countBullishCandles
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.getCandlesForTicker
@@ -21,6 +24,9 @@ class MultiTFViewModel : ViewModel() {
     val multiTFData = MutableLiveData<List<MultiTFResult>>()
     private val _investmentSignal = MutableLiveData<String>()
     val investmentSignal: LiveData<String> get() = _investmentSignal
+
+    private val _analyzedTickers = MutableLiveData<List<TickerAnalysis>>()
+    val analyzedTickers: LiveData<List<TickerAnalysis>> = _analyzedTickers
 
     fun startAutoUpdate(intervalMillis: Long) {
         viewModelScope.launch {
@@ -92,13 +98,48 @@ class MultiTFViewModel : ViewModel() {
         }
     }
 
+    fun fetchAndScoreTickers() {
+        viewModelScope.launch {
+            try {
+                val tickers = RetrofitInstance.api.getTickers()
+                    .filter { it.symbol.endsWith(MainActivity.USDT) }
+
+                val analyses = mutableListOf<TickerAnalysis>()
+
+                for (ticker in tickers) {
+                    Log.d("DEBUG", "Processando ${ticker.symbol}")
+
+                    val closes = getClosesForTicker(ticker.symbol)
+                    val candlesRaw = getCandlesForTicker(ticker.symbol)
+                    val candles = parseCandles(candlesRaw!!)
+
+                    if (closes.isNotEmpty() && candles.isNotEmpty()) {
+                        val analysis = analyzeTicker(ticker, closes, candles)
+                        if (analysis.score >= 7) {
+                            analyses.add(analysis)
+                        }
+                    } else {
+                        Log.w("DEBUG", "Dados insuficientes para ${ticker.symbol}")
+                    }
+                }
+
+                val sorted = analyses.sortedByDescending { it.score }
+                _analyzedTickers.value = sorted
+
+            } catch (e: Exception) {
+                Log.e("ViewModel", "Erro na fetchAndScoreTickers", e)
+            }
+        }
+    }
+
+
     fun analyzeInvestmentDay(analysisList: List<TickerAnalysis>) {
         if (analysisList.isEmpty()) {
             _investmentSignal.value = "Sem dados suficientes para análise."
             return
         }
 
-        val goodOpportunities = analysisList.filter {
+        /*val goodOpportunities = analysisList.filter {
             it.score in 7..10 &&
                     (it.rsi ?: 0f) in 55f..70f &&
                     it.bullishCount >= 3 &&
@@ -112,7 +153,7 @@ class MultiTFViewModel : ViewModel() {
             ratio > 0.5 -> "🔥 Hoje é um bom dia para investir. Muitas moedas com tendência forte!"
             ratio > 0.25 -> "⚠️ Atenção: poucas boas oportunidades. Gerencie seu risco."
             else -> "❌ Hoje não é ideal para investir. Aguarde melhor momento."
-        }
+        }*/
     }
 
 

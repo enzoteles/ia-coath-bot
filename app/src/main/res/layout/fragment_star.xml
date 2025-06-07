@@ -27,6 +27,15 @@
             android:clipToPadding="false"
             android:paddingBottom="8dp" />
 
+        <TextView
+            android:id="@+id/tvMsgErro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:visibility="gone"
+            android:paddingBottom="8dp" />
+
 
 
     </FrameLayout>
