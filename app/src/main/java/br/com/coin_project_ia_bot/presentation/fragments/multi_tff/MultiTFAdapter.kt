@@ -17,8 +17,25 @@ class MultiTFAdapter : ListAdapter<MultiTFResult, MultiTFAdapter.ViewHolder>(
     inner class ViewHolder(val binding: ItemMultiTfBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MultiTFResult) {
             binding.tvSymbol.text = item.symbol
-            binding.tvChange.text = "Variação 1h: ${item.oneHourChange}%"
+            binding.tvChange.text = "Variação 1h: ${"%.2f".format(item.oneHourChange)}%"
+
             binding.tvTrend.text = item.trend
+            binding.tvConsistency.text = "Consistência: ${item.consistency}"
+            binding.tvScore.text = "Score IA: ${item.score}"
+
+            val lastPrice = item.lastPrice ?: 0f
+            val (tpPercent, slPercent) = when (item.score) {
+                in 9..10 -> 0.05f to 0.02f
+                in 7..8 -> 0.04f to 0.015f
+                in 5..6 -> 0.025f to 0.01f
+                else -> 0.02f to 0.01f
+            }
+
+            val takeProfitPrice = lastPrice * (1 + tpPercent)
+            val stopLossPrice = lastPrice * (1 - slPercent)
+
+            binding.tvTakeProfit.text = "🎯 Take Profit: ${(tpPercent * 100).toInt()}% (R$ ${"%.4f".format(takeProfitPrice)})"
+            binding.tvStopLoss.text = "🛑 Stop Loss: ${(slPercent * 100).toInt()}% (R$ ${"%.4f".format(stopLossPrice)})"
         }
     }
 

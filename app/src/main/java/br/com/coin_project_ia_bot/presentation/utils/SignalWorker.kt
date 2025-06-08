@@ -4,16 +4,17 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.coin_project_ia_bot.BinanceApiImpl
-import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer
 import br.com.coin_project_ia_bot.domain.model.SignalTicker
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.*
 import br.com.coin_project_ia_bot.presentation.fragments.signal.TelegramNotifier
+import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer
 
 class SignalWorker(
     context: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
 
-    private val api = BinanceApiImpl() // Sua implementação da API
+    private val api = BinanceApiImpl()
     private val analyzer = CoinAnalyzer(api)
 
     override suspend fun doWork(): Result {
@@ -23,37 +24,55 @@ class SignalWorker(
 
         for (symbol in pares) {
             try {
-                println("🔍 Analisando $symbol...")
-
                 val candles2h = analyzer.getCandles(symbol, "1m", 120)
-                val change = analyzer.variationPercent(candles2h)
+                val candlesParsed = candles2h
+                val change = variationPercent(candlesParsed)
 
-                if (change in 3f..5f && analyzer.isVolumeIncreasing(candles2h)) {
-                    val h1 = analyzer.getCandles(symbol, "1h", 3)
-                    val m15 = analyzer.getCandles(symbol, "15m", 4)
+                if (change in 3f..10f && isVolumeIncreasing(candlesParsed)) {
+                    val rsi = calculateRSI(candlesParsed.map { it.close }) ?: continue
+                    val bullishCount = countBullishCandles(candlesParsed)
 
-                    if (analyzer.isUptrend(h1) && analyzer.isUptrend(m15)) {
-                        val signal = SignalTicker(symbol, change)
-                        sinais.add(signal)
+                    if (rsi in 55f..70f && bullishCount >= 3) {
+                        val h1 = analyzer.getCandles(symbol, "1h", 3)
+                        val m15 = analyzer.getCandles(symbol, "15m", 4)
 
-                        val msg = """
-                            🚨 <b>Sinal de Compra Detectado</b>
-                            💰 Par: <b>${signal.symbol}</b>
-                            💸 Variação 2h: <b>%.2f%%</b>
-                            🔎 Tendência confirmada em H1 e M15
-                        """.trimIndent().format(signal.variation2h)
+                        if (isUptrend(h1) && isUptrend(m15)) {
+                            val consistency = estimateConsistencyAI(rsi.toInt(), bullishCount.toFloat(), change.toInt())
+                            val score = estimateAIScore(rsi, bullishCount, change, extractVolume(candlesParsed))
+                            val (tp, sl) = determineRiskRanges(score)
 
-                        try {
+                            val signal = SignalTicker(
+                                symbol = symbol,
+                                variation2h = change,
+                                rsi = rsi,
+                                bullishCount = bullishCount,
+                                score = score,
+                                consistency = consistency,
+                                timestamp = System.currentTimeMillis(),
+                                trend = consistency,
+                                oneHourChange = 0f,
+                                takeProfitRange = tp,
+                                stopLoss = sl
+                            )
+
+                            sinais.add(signal)
+
+                            val msg = """
+                                🚨 <b>Sinal de Compra Detectado</b>
+                                💰 Par: <b>${signal.symbol}</b>
+                                📈 Variação 2h: <b>${"%.2f".format(change)}%</b>
+                                📊 RSI: <b>${"%.1f".format(rsi)}</b>
+                                ✨ Bullish Count: <b>$bullishCount</b>
+                                🔹 Consistência: <b>${consistency}</b>
+                                ⭐ Score IA: <b>$score /10</b>
+                                🎯 Lucro Alvo: <b>$tp</b>
+                                🛑 Stop: <b>$sl</b>
+                                ✅ Confirmado em H1 e M15
+                            """.trimIndent()
+
                             TelegramNotifier.sendMessage(msg)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            println("❌ Falha ao enviar alerta do Telegram para $symbol")
                         }
-                    } else {
-                        println("↘️ $symbol: Tendência não confirmada")
                     }
-                } else {
-                    println("❌ $symbol: sem variação/volume suficiente")
                 }
 
             } catch (e: Exception) {
@@ -63,7 +82,7 @@ class SignalWorker(
         }
 
         val duration = (System.currentTimeMillis() - startTime) / 1000
-        println("✅ Fim da execução do SignalWorker. ${sinais.size} sinais encontrados em ${duration}s")
+        println("✅ Fim da execução. ${sinais.size} sinais encontrados em ${duration}s")
 
         return Result.success()
     }

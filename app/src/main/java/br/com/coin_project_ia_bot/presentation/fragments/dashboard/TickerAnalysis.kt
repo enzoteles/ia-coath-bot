@@ -4,14 +4,28 @@ import android.util.Log
 import br.com.coin_project_ia_bot.RetrofitInstance
 import br.com.coin_project_ia_bot.Ticker
 import br.com.coin_project_ia_bot.domain.model.Candle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 
 data class TickerAnalysis(
     val ticker: Ticker,
-    val score: Float, // alterado para Float para melhor precisão
+    val score: Float,
     val rsi: Float?,
     val bullishCount: Int,
     val change: Float,
     val consistency: String? = null
+)
+
+data class SignalTicker(
+    val symbol: String,
+    val oneHourChange: Float,
+    val trend: String,
+    val consistency: String,
+    val score: Int,
+    val rsi: Float?,
+    val bullishCount: Int,
+    val timestamp: Log,
 )
 
 fun analyzeTicker(
@@ -32,7 +46,6 @@ fun analyzeTicker(
 
     var score = 0f
 
-    // Pesos inteligentes para aumentar confiabilidade
     if (change in 2f..5f) score += 2.5f
     else if (change > 5f) score += 3.5f
 
@@ -152,5 +165,43 @@ fun calculateConsistency(
                 volume > 250_000 -> "Consistência Moderada ⚠️"
 
         else -> "Baixa Consistência ⚠️"
+    }
+}
+
+fun estimateAIScore(rsi: Float?, bullishCount: Int, change: Float, volume: Float): Int {
+    var score = 0
+    if (rsi != null && rsi in 55f..70f) score += 2
+    if (bullishCount >= 3) score += 2
+    if (change >= 2f) score += 2
+    if (volume > 500_000f) score += 2
+    return score
+}
+
+fun extractVolume(candles: List<Candle>): Float {
+    return 10f
+}
+
+fun isUptrend(candles: List<Candle>, minUpCandles: Int = 3): Boolean {
+    return candles.takeLast(minUpCandles).count { it.close > it.open } >= minUpCandles
+}
+
+fun variationPercent(candles: List<Candle>): Float {
+    if (candles.size < 2) return 0f
+    val first = candles.first().close
+    val last = candles.last().close
+    return ((last - first) / first) * 100f
+}
+
+fun isVolumeIncreasing(candles: List<Candle>): Boolean {
+    val volumes = candles.takeLast(10).map { it.volume }
+    return volumes.windowed(3, 1).any { it[2] > it[1] && it[1] > it[0] }
+}
+
+fun estimateConsistencyAI(score: Int, rsi: Float?, bullishCount: Int): String {
+    return when {
+        score >= 9 && rsi != null && rsi in 60f..70f && bullishCount >= 5 -> "🚀 Forte Tendência Confirmada"
+        score in 7..8 && rsi != null && rsi in 55f..65f -> "📈 Boa Tendência"
+        score in 5..6 -> "🔍 Potencial Emergente"
+        else -> "⚠️ Baixa Confiabilidade"
     }
 }

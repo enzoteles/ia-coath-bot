@@ -45,24 +45,59 @@ class MultiTFViewModel : ViewModel() {
         val results = mutableListOf<MultiTFResult>()
 
         for (ticker in usdtPairs) {
-            val closes = getClosesForTicker(ticker.symbol) // últimos fechamentos
-            val candles = getCandlesForTicker(ticker.symbol) // últimos candles
+            val closes = getClosesForTicker(ticker.symbol)
+            val candles = getCandlesForTicker(ticker.symbol)
 
             if (closes.isNotEmpty() && candles!!.isNotEmpty()) {
                 val rsi = calculateRSI(closes)
                 val bullishCount = countBullishCandles(parseCandles(candles))
                 val score = estimateAIScore(ticker, rsi, bullishCount)
                 val consistency = estimateConsistency(ticker)
+                val (tpPercent, slPercent) = determineRiskReward(score)
+                val currentPrice = ticker.lastPrice.toFloatOrNull() ?: 0f
 
-                // Se atingir score alto, considerar como oportunidade
+                val takeProfitPrice = currentPrice * (1 + tpPercent / 100)
+                val stopLossPrice = currentPrice * (1 - slPercent / 100)
+
                 if (score >= 7) {
                     val trend = estimateConsistencyAI(score, rsi, bullishCount)
-                    results.add(MultiTFResult(ticker.symbol, ticker.priceChangePercent.toFloatOrNull() ?: 0f, trend, consistency, score, rsi, bullishCount))
+                    results.add(
+                        MultiTFResult(
+                            symbol = ticker.symbol,
+                            oneHourChange = ticker.priceChangePercent.toFloatOrNull() ?: 0f,
+                            trend = trend,
+                            consistency = consistency,
+                            score = score,
+                            rsi = rsi,
+                            bullishCount = bullishCount,
+                            takeProfit = "TP: +${"%.2f".format(tpPercent)}% (≈ ${"%.4f".format(takeProfitPrice)})",
+                            stopLoss = "SL: -${"%.2f".format(slPercent)}% (≈ ${"%.4f".format(stopLossPrice)})",
+                            lastPrice = ticker.lastPrice.toFloatOrNull() ?: 0f
+                        )
+                    )
                 }
             }
         }
 
-        return results.sortedByDescending { it.score }
+        //return results.sortedByDescending { it.score }
+        return results.sortedWith(compareByDescending<MultiTFResult> {
+            when (it.trend) {
+                "🚀 Forte Tendência Confirmada" -> 4
+                "📈 Boa Tendência" -> 3
+                "🔍 Potencial Emergente" -> 2
+                "⚠️ Baixa Confiabilidade" -> 1
+                else -> 0
+            }
+        }.thenByDescending { it.score })
+    }
+
+    private fun determineRiskReward(score: Int): Pair<Float, Float> {
+        return when {
+            score >= 9 -> Pair(6.5f, 2f) // Forte tendência
+            score in 7..8 -> Pair(4.0f, 1.5f) // Boa tendência
+            score in 5..6 -> Pair(2.0f, 1f) // Potencial emergente
+            else -> Pair(0f, 0f)
+        }
     }
 
     private fun estimateAIScore(ticker: Ticker, rsi: Float?, bullishCount: Int): Int {
@@ -132,29 +167,10 @@ class MultiTFViewModel : ViewModel() {
         }
     }
 
-
     fun analyzeInvestmentDay(analysisList: List<TickerAnalysis>) {
         if (analysisList.isEmpty()) {
             _investmentSignal.value = "Sem dados suficientes para análise."
             return
         }
-
-        /*val goodOpportunities = analysisList.filter {
-            it.score in 7..10 &&
-                    (it.rsi ?: 0f) in 55f..70f &&
-                    it.bullishCount >= 3 &&
-                    it.ticker.volume.toFloatOrNull()?.let { vol -> vol > 500_000f } == true &&
-                    it.change in 2f..5f
-        }
-
-        val ratio = goodOpportunities.size.toFloat() / analysisList.size
-
-        _investmentSignal.value = when {
-            ratio > 0.5 -> "🔥 Hoje é um bom dia para investir. Muitas moedas com tendência forte!"
-            ratio > 0.25 -> "⚠️ Atenção: poucas boas oportunidades. Gerencie seu risco."
-            else -> "❌ Hoje não é ideal para investir. Aguarde melhor momento."
-        }*/
     }
-
-
 }

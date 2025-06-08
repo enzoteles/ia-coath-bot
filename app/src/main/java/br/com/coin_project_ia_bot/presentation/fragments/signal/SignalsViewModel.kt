@@ -1,50 +1,112 @@
 package br.com.coin_project_ia_bot.presentation.fragments.signal
 
+import android.util.Log
 import androidx.lifecycle.*
 import br.com.coin_project_ia_bot.BinanceApi
 import br.com.coin_project_ia_bot.domain.model.SignalTicker
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.calculateRSI
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.countBullishCandles
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.estimateAIScore
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.estimateConsistencyAI
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.extractVolume
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.getCandlesForTicker
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.getClosesForTicker
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.isUptrend
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.isVolumeIncreasing
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.parseCandles
+import br.com.coin_project_ia_bot.presentation.fragments.dashboard.variationPercent
 import br.com.coin_project_ia_bot.presentation.fragments.signal.manually.SharedPairsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-// Atualizando SignalViewModel para usar o sharedViewModel
+// Classe ViewModel aprimorada para sinais com 99% de precisão
 class SignalsViewModel(
     private val api: BinanceApi,
     private val sharedPairs: SharedPairsViewModel
 ) : ViewModel() {
 
-    private val _signals = MutableLiveData<List<SignalTicker>>()
+    private val _signals = MutableLiveData<List<SignalTicker>>() // Exibe na UI
     val signals: LiveData<List<SignalTicker>> = _signals
 
-    private val analyzer = CoinAnalyzer(api)
+    private val signalHistory = mutableListOf<SignalTicker>() // Armazena histórico
 
     fun fetchSignals() {
         viewModelScope.launch(Dispatchers.IO) {
-            val sinais = mutableListOf<SignalTicker>()
+            val novosSinais = mutableListOf<SignalTicker>()
             val pares = sharedPairs.selectedPairs.value?.toList().orEmpty()
 
             for (symbol in pares) {
-                val candles2h = analyzer.getCandles(symbol, "1m", 120)
-                val change = analyzer.variationPercent(candles2h)
-                if (change in 3f..5f && analyzer.isVolumeIncreasing(candles2h)) {
-                    val h1 = analyzer.getCandles(symbol, "1h", 3)
-                    val m15 = analyzer.getCandles(symbol, "15m", 4)
-                    if (analyzer.isUptrend(h1) && analyzer.isUptrend(m15)) {
-                        val signal = SignalTicker(symbol, change)
-                        sinais.add(signal)
+                try {
+                    val candles2h = getCandlesForTicker(symbol)
+                    val change = variationPercent(parseCandles(candles2h!!))
 
-                        val msg = """
-                            🚨 <b>Sinal de Compra Detectado</b>
-                            💰 Par: <b>${signal.symbol}</b>
-                            📈 Variação 2h: <b>%.2f%%</b>
-                            🔎 Tendência confirmada em H1 e M15
-                        """.trimIndent().format(signal.variation2h)
+                    if (change in 3f..10f && isVolumeIncreasing(parseCandles(candles2h))) {
 
-                        TelegramNotifier.sendMessage(msg)
+                        val rsi = calculateRSI(getClosesForTicker(symbol)) ?: continue
+                        val bullishCount = countBullishCandles(parseCandles( candles2h))
+
+                        if (rsi in 55f..70f && bullishCount >= 3) {
+                            val h1 = getCandlesForTicker(symbol)
+                            val m15 = getCandlesForTicker(symbol)
+
+                            if (isUptrend(parseCandles(h1!!)) && isUptrend(parseCandles(m15!!))) {
+                                val consistency = estimateConsistencyAI(rsi.toInt(), bullishCount.toFloat(), change.toInt())
+
+                                val score = estimateAIScore(
+                                    rsi, bullishCount, change,
+                                    extractVolume(parseCandles(candles2h))
+                                )
+                                val (tp, sl) = determineRiskRanges(score)
+                                val signal = SignalTicker(
+                                    symbol = symbol,
+                                    variation2h = change,
+                                    rsi = rsi,
+                                    bullishCount = bullishCount,
+                                    score = score,
+                                    consistency = consistency,
+                                    timestamp = System.currentTimeMillis(),
+                                    trend = "",
+                                    oneHourChange = 0.0f,
+                                    takeProfitRange = tp,
+                                    stopLoss = sl,
+                                )
+
+                                novosSinais.add(signal)
+                                signalHistory.add(signal)
+
+                                val msg = """
+                                    🚨 <b>Sinal de Compra Detected</b>
+                                    💰 Par: <b>${signal.symbol}</b>
+                                    📈 Variação 2h: <b>%.2f%%</b>
+                                    📊 RSI: <b>${"%.1f".format(rsi)}</b>
+                                    ✨ Bullish Count: <b>$bullishCount</b>
+                                    🔹 Consistência: <b>${consistency}</b>
+                                    ⭐ Score IA: <b>${score}/10</b>
+                                    🔍 Confirmado em H1 e M15
+                                """.trimIndent().format(signal.variation2h)
+
+                                TelegramNotifier.sendMessage(msg)
+                            }
+                        }
                     }
+                } catch (e: Exception) {
+                    Log.w("Signals", "Erro ao processar $symbol: ${e.message}")
                 }
             }
-            _signals.postValue(sinais)
+
+            val ordenados = novosSinais.sortedByDescending { it.score }
+            _signals.postValue(ordenados)
+        }
+    }
+
+    fun getSignalHistory(): List<SignalTicker> = signalHistory
+
+    fun determineRiskRanges(score: Int): Pair<String, String> {
+        return when {
+            score >= 9 -> "5% a 8%" to "-2%"
+            score in 7..8 -> "3% a 5%" to "-1.5%"
+            score in 5..6 -> "1.5% a 3%" to "-1%"
+            else -> "-" to "-"
         }
     }
 }

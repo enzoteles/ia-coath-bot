@@ -38,16 +38,11 @@ class MultiTFFragment : Fragment() {
         binding.rvMultiTF.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMultiTF.adapter = adapter
 
-        /*multiViewModel.multiTFData.observe(viewLifecycleOwner) { list ->
+        multiViewModel.multiTFData.observe(viewLifecycleOwner) { list ->
+            //val filteredList = list.filter { it.consistency == "📈 Boa Tendência" || it.consistency == "⚠\uFE0F Baixa Confiabilidade" }
             adapter.submitList(list)
             binding.progressLoading.visibility = View.GONE
-        }*/
-
-        multiViewModel.multiTFData.observe(viewLifecycleOwner) { list ->
-            val filteredList = list.filter { it.consistency == "📈 Boa Tendência" }
-            adapter.submitList(filteredList)
-            binding.progressLoading.visibility = View.GONE
-            if(filteredList.isEmpty()) binding.tvMsg.visibility = View.VISIBLE
+            //if(filteredList.isEmpty()) binding.tvMsg.visibility = View.VISIBLE
         }
 
 

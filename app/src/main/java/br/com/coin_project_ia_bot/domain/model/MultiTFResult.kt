@@ -7,6 +7,9 @@ data class MultiTFResult(
     val consistency: String,
     val score: Int,
     val rsi: Float?,
-    val bullishCount: Int
+    val bullishCount: Int,
+    var takeProfit: String,
+    var stopLoss: String,
+    var lastPrice : Float,
 )
 

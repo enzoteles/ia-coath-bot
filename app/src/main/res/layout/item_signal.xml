@@ -1,22 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="12dp"
-    android:background="@android:color/white">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvSymbol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="BTCUSDT"
         android:textStyle="bold"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/tvChange"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Variação em 2h: +4.32%" />
+        android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/tvChange"
+        android:text="Variação 2h: 4.5%"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/tvRsi"
+        android:text="RSI: 61.2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/tvBullish"
+        android:text="Bullish Candles: 4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/tvScore"
+        android:text="Score IA: 8/10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/tvConsistency"
+        android:text="📈 Boa Tendência"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/tvTargetProfit"
+        android:text="Lucro Alvo: 3% a 5%"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/tvStopLoss"
+        android:text="Stop: -1.5%"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>
