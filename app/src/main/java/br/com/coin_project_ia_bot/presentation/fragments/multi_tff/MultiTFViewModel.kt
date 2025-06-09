@@ -9,6 +9,7 @@ import br.com.coin_project_ia_bot.RetrofitInstance
 import br.com.coin_project_ia_bot.Ticker
 import br.com.coin_project_ia_bot.domain.model.MultiTFResult
 import br.com.coin_project_ia_bot.presentation.MainActivity
+import br.com.coin_project_ia_bot.presentation.MainActivity.Companion.USDT
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.TickerAnalysis
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.analyzeTicker
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.calculateRSI
@@ -16,10 +17,14 @@ import br.com.coin_project_ia_bot.presentation.fragments.dashboard.countBullishC
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.getCandlesForTicker
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.getClosesForTicker
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.parseCandles
+import br.com.coin_project_ia_bot.presentation.fragments.signal.manually.SharedPairsViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MultiTFViewModel : ViewModel() {
+const val QTD_COIN = 60
+class MultiTFViewModel(
+    private val sharedPairs: SharedPairsViewModel
+) : ViewModel() {
 
     val multiTFData = MutableLiveData<List<MultiTFResult>>()
     private val _investmentSignal = MutableLiveData<String>()
@@ -40,7 +45,9 @@ class MultiTFViewModel : ViewModel() {
 
     private suspend fun fetchMultiTFAnalysis(): List<MultiTFResult> {
         val tickers = RetrofitInstance.api.getTickers()
-        val usdtPairs = tickers.filter { it.symbol.endsWith("USDT") }
+        val usdtPairs = tickers.filter {
+            it.symbol.endsWith(USDT)
+        }.take(QTD_COIN)
 
         val results = mutableListOf<MultiTFResult>()
 
@@ -79,7 +86,6 @@ class MultiTFViewModel : ViewModel() {
             }
         }
 
-        //return results.sortedByDescending { it.score }
         return results.sortedWith(compareByDescending<MultiTFResult> {
             when (it.trend) {
                 "🚀 Forte Tendência Confirmada" -> 4

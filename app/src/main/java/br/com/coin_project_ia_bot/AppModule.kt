@@ -14,10 +14,10 @@ import org.koin.dsl.module
 
 val appModule = module {
     single<BinanceApi> { BinanceApiImpl() }
+    viewModel { SharedPairsViewModel() }
     viewModel { DashboardViewModel() }
     viewModel { MultiTimeframeViewModel() }
-    viewModel { MultiTFViewModel() }
-    viewModel { SharedPairsViewModel() }
+    viewModel { MultiTFViewModel(get()) }
     viewModel { SignalsViewModel(get(), get()) }
     viewModel { PumpViewModel(get()) }
     single { PumpAlertViewModel(get()) }

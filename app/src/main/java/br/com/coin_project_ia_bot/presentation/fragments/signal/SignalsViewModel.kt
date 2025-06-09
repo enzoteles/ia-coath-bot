@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 // Classe ViewModel aprimorada para sinais com 99% de precisão
+@Suppress("UNREACHABLE_CODE")
 class SignalsViewModel(
     private val api: BinanceApi,
     private val sharedPairs: SharedPairsViewModel
@@ -57,6 +58,26 @@ class SignalsViewModel(
                                     extractVolume(parseCandles(candles2h))
                                 )
                                 val (tp, sl) = determineRiskRanges(score)
+
+                                val candles2hRaw = getCandlesForTicker(symbol)
+                                val candlesParsed = parseCandles(candles2hRaw!!)
+                                if (candlesParsed.isEmpty()) continue
+
+                                val currentPrice = candlesParsed.last().close
+
+                                // Determina faixas em % baseado no score
+                                val (tpPercent, slPercent) = when {
+                                    score >= 9 -> Pair(0.065f, 0.02f)  // Média entre 5%-8% e 2%
+                                    score in 7..8 -> Pair(0.04f, 0.015f)
+                                    score in 5..6 -> Pair(0.022f, 0.01f)
+                                    else -> Pair(0.0f, 0.0f)
+                                }
+
+                                // Calcula preço alvo e stop
+                                val takeProfitPrice = currentPrice * (1 + tpPercent)
+                                val stopLossPrice = currentPrice * (1 - slPercent)
+
+
                                 val signal = SignalTicker(
                                     symbol = symbol,
                                     variation2h = change,
@@ -69,21 +90,28 @@ class SignalsViewModel(
                                     oneHourChange = 0.0f,
                                     takeProfitRange = tp,
                                     stopLoss = sl,
+                                    lastPrice = currentPrice,
+                                    takeProfitPrice = takeProfitPrice.toString(),
+                                    stopLossPrice = stopLossPrice.toString()
                                 )
 
                                 novosSinais.add(signal)
                                 signalHistory.add(signal)
 
                                 val msg = """
-                                    🚨 <b>Sinal de Compra Detected</b>
+                                    🚨 <b>Sinal de Compra Detectado</b>
                                     💰 Par: <b>${signal.symbol}</b>
-                                    📈 Variação 2h: <b>%.2f%%</b>
+                                    💵 Preço Atual: <b>$currentPrice</b>
+                                    📈 Variação 2h: <b>${"%.2f".format(change)}%</b>
                                     📊 RSI: <b>${"%.1f".format(rsi)}</b>
                                     ✨ Bullish Count: <b>$bullishCount</b>
-                                    🔹 Consistência: <b>${consistency}</b>
-                                    ⭐ Score IA: <b>${score}/10</b>
-                                    🔍 Confirmado em H1 e M15
-                                """.trimIndent().format(signal.variation2h)
+                                    ⭐ Score IA: <b>$score /10</b>
+                                    🔹 Consistência: <b>$consistency</b>
+                                    🎯 Lucro Alvo (TP): <b>${"%.4f".format(takeProfitPrice)}</b>
+                                    🛑 Stop Loss (SL): <b>${"%.4f".format(stopLossPrice)}</b>
+                                    📊 Tendência confirmada em H1 e M15
+                                    """.trimIndent()
+
 
                                 TelegramNotifier.sendMessage(msg)
                             }

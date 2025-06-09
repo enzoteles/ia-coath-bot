@@ -8,11 +8,13 @@ import androidx.lifecycle.viewModelScope
 import br.com.coin_project_ia_bot.RetrofitInstance
 import br.com.coin_project_ia_bot.Ticker
 import br.com.coin_project_ia_bot.presentation.MainActivity
+import br.com.coin_project_ia_bot.presentation.MainActivity.Companion.USDT
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
+const val QTD_COIN = 50
 class DashboardViewModel : ViewModel() {
 
     private val _analyzedTickers = MutableLiveData<List<TickerAnalysis>>()
@@ -22,7 +24,8 @@ class DashboardViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val tickers = RetrofitInstance.api.getTickers()
-                    .filter { it.symbol.endsWith("USDT") }
+                    .filter { it.symbol.endsWith(USDT) }
+                    .take(QTD_COIN)
 
                 val analyses = coroutineScope {
                     tickers.map { ticker ->

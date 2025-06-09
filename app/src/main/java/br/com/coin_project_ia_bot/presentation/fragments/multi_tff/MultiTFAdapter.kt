@@ -36,6 +36,7 @@ class MultiTFAdapter : ListAdapter<MultiTFResult, MultiTFAdapter.ViewHolder>(
 
             binding.tvTakeProfit.text = "🎯 Take Profit: ${(tpPercent * 100).toInt()}% (R$ ${"%.4f".format(takeProfitPrice)})"
             binding.tvStopLoss.text = "🛑 Stop Loss: ${(slPercent * 100).toInt()}% (R$ ${"%.4f".format(stopLossPrice)})"
+            binding.lastPrice.text = "Last Price: R$ ${"%.4f".format(lastPrice)}"
         }
     }
 

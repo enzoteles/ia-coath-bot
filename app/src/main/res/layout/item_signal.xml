@@ -1,49 +1,67 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="12dp"
-    android:orientation="vertical">
+    android:background="@drawable/bg_card"
+    android:layout_marginBottom="8dp">
 
     <TextView
         android:id="@+id/tvSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="BTCUSDT"
         android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:textSize="18sp"/>
 
-    <TextView android:id="@+id/tvChange"
-        android:text="Variação 2h: 4.5%"
+    <TextView
+        android:id="@+id/tvChange"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Variação 2h: 5.0%"/>
 
-    <TextView android:id="@+id/tvRsi"
-        android:text="RSI: 61.2"
+    <TextView
+        android:id="@+id/tvRSI"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="RSI: 60.0"/>
 
-    <TextView android:id="@+id/tvBullish"
-        android:text="Bullish Candles: 4"
+    <TextView
+        android:id="@+id/tvBullish"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Bullish Candles: 4"/>
 
-    <TextView android:id="@+id/tvScore"
-        android:text="Score IA: 8/10"
+    <TextView
+        android:id="@+id/tvScore"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Score IA: 8"/>
 
-    <TextView android:id="@+id/tvConsistency"
-        android:text="📈 Boa Tendência"
+    <TextView
+        android:id="@+id/tvConsistency"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Consistência: 📈 Boa Tendência"/>
 
-    <TextView android:id="@+id/tvTargetProfit"
-        android:text="Lucro Alvo: 3% a 5%"
+    <TextView
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Preço Atual: US$ 63,000.00"/>
 
-    <TextView android:id="@+id/tvStopLoss"
-        android:text="Stop: -1.5%"
+    <TextView
+        android:id="@+id/tvTakeProfit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Take Profit: US$ 65,520.00"/>
+
+    <TextView
+        android:id="@+id/tvStopLoss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Loss: US$ 61,050.00"/>
+
 </LinearLayout>

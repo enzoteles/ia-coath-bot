@@ -17,17 +17,6 @@ data class TickerAnalysis(
     val consistency: String? = null
 )
 
-data class SignalTicker(
-    val symbol: String,
-    val oneHourChange: Float,
-    val trend: String,
-    val consistency: String,
-    val score: Int,
-    val rsi: Float?,
-    val bullishCount: Int,
-    val timestamp: Log,
-)
-
 fun analyzeTicker(
     ticker: Ticker,
     closes: List<Float>,

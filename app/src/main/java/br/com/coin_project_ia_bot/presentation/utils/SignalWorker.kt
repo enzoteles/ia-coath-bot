@@ -8,10 +8,12 @@ import br.com.coin_project_ia_bot.domain.model.SignalTicker
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.*
 import br.com.coin_project_ia_bot.presentation.fragments.signal.TelegramNotifier
 import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer
+import br.com.coin_project_ia_bot.presentation.fragments.signal.manually.SharedPairsViewModel
 
 class SignalWorker(
     context: Context,
-    workerParams: WorkerParameters
+    workerParams: WorkerParameters,
+    private val sharedPairs: SharedPairsViewModel
 ) : CoroutineWorker(context, workerParams) {
 
     private val api = BinanceApiImpl()
@@ -19,13 +21,17 @@ class SignalWorker(
 
     override suspend fun doWork(): Result {
         val startTime = System.currentTimeMillis()
-        val pares = listOf("BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT", "AVAXUSDT")
+        //val pares = listOf("BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT", "AVAXUSDT")
+        val pares = sharedPairs.selectedPairs.value?.toList().orEmpty()
         val sinais = mutableListOf<SignalTicker>()
 
         for (symbol in pares) {
             try {
-                val candles2h = analyzer.getCandles(symbol, "1m", 120)
-                val candlesParsed = candles2h
+                val candles2hRaw = analyzer.getCandles(symbol, "1m", 120)
+                val candlesParsed = candles2hRaw
+
+                if (candlesParsed.isEmpty()) continue
+
                 val change = variationPercent(candlesParsed)
 
                 if (change in 3f..10f && isVolumeIncreasing(candlesParsed)) {
@@ -34,12 +40,16 @@ class SignalWorker(
 
                     if (rsi in 55f..70f && bullishCount >= 3) {
                         val h1 = analyzer.getCandles(symbol, "1h", 3)
-                        val m15 = analyzer.getCandles(symbol, "15m", 4)
+                        val m15 =analyzer.getCandles(symbol, "15m", 4)
 
                         if (isUptrend(h1) && isUptrend(m15)) {
                             val consistency = estimateConsistencyAI(rsi.toInt(), bullishCount.toFloat(), change.toInt())
                             val score = estimateAIScore(rsi, bullishCount, change, extractVolume(candlesParsed))
-                            val (tp, sl) = determineRiskRanges(score)
+                            val currentPrice = candlesParsed.last().close
+
+                            val (tpPercent, slPercent) = determineRiskRanges(score)
+                            val takeProfitPrice = currentPrice * (1 + tpPercent)
+                            val stopLossPrice = currentPrice * (1 - slPercent)
 
                             val signal = SignalTicker(
                                 symbol = symbol,
@@ -51,8 +61,11 @@ class SignalWorker(
                                 timestamp = System.currentTimeMillis(),
                                 trend = consistency,
                                 oneHourChange = 0f,
-                                takeProfitRange = tp,
-                                stopLoss = sl
+                                takeProfitRange = "%.4f".format(takeProfitPrice),
+                                stopLoss = "%.4f".format(stopLossPrice),
+                                lastPrice = currentPrice,
+                                takeProfitPrice = takeProfitPrice.toString(),
+                                stopLossPrice = stopLossPrice.toString()
                             )
 
                             sinais.add(signal)
@@ -65,8 +78,8 @@ class SignalWorker(
                                 ✨ Bullish Count: <b>$bullishCount</b>
                                 🔹 Consistência: <b>${consistency}</b>
                                 ⭐ Score IA: <b>$score /10</b>
-                                🎯 Lucro Alvo: <b>$tp</b>
-                                🛑 Stop: <b>$sl</b>
+                                🎯 Lucro Alvo: <b>${signal.takeProfitRange}</b>
+                                🛑 Stop: <b>${signal.stopLoss}</b>
                                 ✅ Confirmado em H1 e M15
                             """.trimIndent()
 
@@ -85,5 +98,14 @@ class SignalWorker(
         println("✅ Fim da execução. ${sinais.size} sinais encontrados em ${duration}s")
 
         return Result.success()
+    }
+
+    private fun determineRiskRanges(score: Int): Pair<Float, Float> {
+        return when {
+            score >= 9 -> 0.065f to 0.02f
+            score in 7..8 -> 0.04f to 0.015f
+            score in 5..6 -> 0.022f to 0.01f
+            else -> 0.0f to 0.0f
+        }
     }
 }

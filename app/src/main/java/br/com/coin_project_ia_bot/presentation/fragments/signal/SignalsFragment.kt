@@ -27,10 +27,15 @@ class SignalsFragment : Fragment() {
         binding.rvSignals.adapter = adapter
 
         singalsViewModel.signals.observe(viewLifecycleOwner) { list ->
+            //if(list.isEmpty()) binding.msgSignalsErro.visibility = View.VISIBLE else View.GONE
+            if(list.isNotEmpty()) binding.progressLoading.visibility = View.GONE else View.VISIBLE
             adapter = SignalAdapter(list)
             binding.rvSignals.adapter = adapter
-        }
 
+
+        }
+        binding.msgSignalsErro.visibility = View.GONE
+        binding.progressLoading.visibility = View.VISIBLE
         singalsViewModel.fetchSignals() // inicia a análise
     }
 

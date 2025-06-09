@@ -66,4 +66,14 @@
         android:textSize="14sp"
         android:textColor="#B71C1C" />
 
+    <TextView
+        android:id="@+id/lastPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Price:"
+        android:textSize="14sp"
+        android:textColor="@color/colorBlue"
+        android:textStyle="bold"
+        />
+
 </LinearLayout>
