@@ -1,4 +1,4 @@
-package br.com.coin_project_ia_bot.presentation.fragments.signal
+package br.com.coin_project_ia_bot.presentation.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

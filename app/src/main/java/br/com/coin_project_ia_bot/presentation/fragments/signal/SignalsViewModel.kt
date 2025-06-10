@@ -16,6 +16,7 @@ import br.com.coin_project_ia_bot.presentation.fragments.dashboard.isVolumeIncre
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.parseCandles
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.variationPercent
 import br.com.coin_project_ia_bot.presentation.fragments.signal.manually.SharedPairsViewModel
+import br.com.coin_project_ia_bot.presentation.utils.TelegramNotifier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

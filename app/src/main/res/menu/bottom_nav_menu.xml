@@ -24,8 +24,8 @@
         android:title="Pump" /-->
 
     <item
-        android:id="@+id/pumpAlertFragment"
-        android:icon="@drawable/ic_pump_alert"
+        android:id="@+id/pumpFragment"
+        android:icon="@drawable/ic_pair"
         android:title="Alertas Pump" />
 
     <item

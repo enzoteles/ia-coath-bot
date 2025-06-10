@@ -6,7 +6,6 @@ import androidx.work.WorkerParameters
 import br.com.coin_project_ia_bot.BinanceApiImpl
 import br.com.coin_project_ia_bot.domain.model.SignalTicker
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.*
-import br.com.coin_project_ia_bot.presentation.fragments.signal.TelegramNotifier
 import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer
 import br.com.coin_project_ia_bot.presentation.fragments.signal.manually.SharedPairsViewModel
 

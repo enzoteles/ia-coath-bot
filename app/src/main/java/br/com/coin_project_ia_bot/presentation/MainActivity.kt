@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         val destination = intent.getStringExtra("navigate_to")
         if (destination == "pump") {
-            navController.navigate(R.id.pumpAlertFragment)
+            navController.navigate(R.id.pumpFragment)
         }
 
     }

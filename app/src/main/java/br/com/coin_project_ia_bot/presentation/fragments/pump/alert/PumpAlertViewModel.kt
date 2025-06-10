@@ -9,7 +9,7 @@ import br.com.coin_project_ia_bot.BinanceApi
 import br.com.coin_project_ia_bot.presentation.MainActivity
 import br.com.coin_project_ia_bot.domain.model.PumpTicker
 import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer
-import br.com.coin_project_ia_bot.presentation.fragments.signal.TelegramNotifier
+import br.com.coin_project_ia_bot.presentation.utils.TelegramNotifier
 import br.com.coin_project_ia_bot.presentation.utils.PumpNotifier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class PumpAlertViewModel(private val api: BinanceApi) : ViewModel() {
                     val candles = analyzer.getCandles(symbol, "1m", 120)
                     val change = CoinAnalyzer(api).variationPercent(candles)
 
-                    if (change > 10f) {
+                    if (change > 2f && change < 5f) {
                         detected.add(PumpTicker(symbol, change))
 
                         val msg = """
