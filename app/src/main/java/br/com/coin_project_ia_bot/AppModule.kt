@@ -8,7 +8,7 @@ import br.com.coin_project_ia_bot.presentation.fragments.pump.alert.PumpAlertVie
 import br.com.coin_project_ia_bot.presentation.fragments.recommend.RecommendViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.signal.SignalsViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.signal.manually.SharedPairsViewModel
-import br.com.coin_project_ia_bot.presentation.fragments.trend.TrendAIAnalyzer
+import br.com.coin_project_ia_bot.presentation.utils.TrendAIAnalyzer
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

@@ -1,4 +1,4 @@
-package br.com.coin_project_ia_bot.presentation.fragments.trend
+package br.com.coin_project_ia_bot.presentation.utils
 
 import br.com.coin_project_ia_bot.BinanceApi
 import br.com.coin_project_ia_bot.domain.model.TrendAnalysisResult

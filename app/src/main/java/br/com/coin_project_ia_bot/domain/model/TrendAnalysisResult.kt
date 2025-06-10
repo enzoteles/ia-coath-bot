@@ -1,6 +1,6 @@
 package br.com.coin_project_ia_bot.domain.model
 
-import br.com.coin_project_ia_bot.presentation.fragments.trend.TrendDirection
+import br.com.coin_project_ia_bot.presentation.utils.TrendDirection
 
 data class TrendAnalysisResult(
     val symbol: String,
