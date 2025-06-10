@@ -1,4 +1,4 @@
-package br.com.coin_project_ia_bot
+package br.com.coin_project_ia_bot.data.model
 
 data class Ticker(
     val askPrice: String,

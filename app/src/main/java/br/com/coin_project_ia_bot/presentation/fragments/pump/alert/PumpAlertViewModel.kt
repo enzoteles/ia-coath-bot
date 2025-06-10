@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.coin_project_ia_bot.BinanceApi
+import br.com.coin_project_ia_bot.data.api.BinanceApi
 import br.com.coin_project_ia_bot.presentation.MainActivity
 import br.com.coin_project_ia_bot.domain.model.PumpTicker
 import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer

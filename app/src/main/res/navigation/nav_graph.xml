@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/coachRecommendFragment"
-        android:name="br.com.coin_project_ia_bot.presentation.fragments.recommend.CoachRecommendFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.recommend.RecommendTabFragment"
         android:label="Coach Recomenda" />
 
 </navigation>

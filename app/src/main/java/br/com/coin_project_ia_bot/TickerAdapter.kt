@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import br.com.coin_project_ia_bot.data.model.Ticker
 import br.com.coin_project_ia_bot.databinding.ItemTickerBinding
 
 class TickerAdapter(private val list: List<Ticker>) : RecyclerView.Adapter<TickerAdapter.TickerViewHolder>() {

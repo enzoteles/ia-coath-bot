@@ -2,7 +2,7 @@ package br.com.coin_project_ia_bot.presentation.fragments.signal
 
 import android.util.Log
 import androidx.lifecycle.*
-import br.com.coin_project_ia_bot.BinanceApi
+import br.com.coin_project_ia_bot.data.api.BinanceApi
 import br.com.coin_project_ia_bot.domain.model.SignalTicker
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.calculateRSI
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.countBullishCandles
@@ -93,7 +93,8 @@ class SignalsViewModel(
                                     stopLoss = sl,
                                     lastPrice = currentPrice,
                                     takeProfitPrice = takeProfitPrice.toString(),
-                                    stopLossPrice = stopLossPrice.toString()
+                                    stopLossPrice = stopLossPrice.toString(),
+                                    investmentPercent = 0f
                                 )
 
                                 novosSinais.add(signal)

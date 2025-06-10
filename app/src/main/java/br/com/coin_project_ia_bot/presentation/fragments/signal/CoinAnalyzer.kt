@@ -1,6 +1,6 @@
 package br.com.coin_project_ia_bot.presentation.fragments.signal
 
-import br.com.coin_project_ia_bot.BinanceApi
+import br.com.coin_project_ia_bot.data.api.BinanceApi
 import br.com.coin_project_ia_bot.domain.model.Candle
 
 class CoinAnalyzer(private val api: BinanceApi) {

@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.coin_project_ia_bot.RetrofitInstance
-import br.com.coin_project_ia_bot.Ticker
-import br.com.coin_project_ia_bot.presentation.MainActivity
 import br.com.coin_project_ia_bot.presentation.MainActivity.Companion.USDT
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

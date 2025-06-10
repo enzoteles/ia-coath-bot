@@ -2,7 +2,7 @@ package br.com.coin_project_ia_bot.presentation.fragments.dashboard
 
 import android.util.Log
 import br.com.coin_project_ia_bot.RetrofitInstance
-import br.com.coin_project_ia_bot.Ticker
+import br.com.coin_project_ia_bot.data.model.Ticker
 import br.com.coin_project_ia_bot.domain.model.Candle
 
 
@@ -149,17 +149,17 @@ fun parseCandles(rawKlines: List<List<String>>): List<Candle> {
     }
 }
 
-suspend fun getCandlesForTicker(symbol: String): List<List<String>>? {
+suspend fun getCandlesForTicker(symbol: String, interval: String = "1h", limit: Int = 50): List<List<String>>? {
     return try {
-        RetrofitInstance.api.getKlines(symbol, "1h", 50)
+        RetrofitInstance.api.getKlines(symbol, interval, limit)
     } catch (e: Exception) {
         null
     }
 }
 
-suspend fun getClosesForTicker(symbol: String): List<Float> {
+suspend fun getClosesForTicker(symbol: String, interval: String = "1h", limit: Int = 50): List<Float> {
     return try {
-        RetrofitInstance.api.getKlines(symbol, "1h", 50)
+        RetrofitInstance.api.getKlines(symbol, interval, limit)
             .mapNotNull { (it.getOrNull(4))?.toFloatOrNull() }
     } catch (e: Exception) {
         emptyList()

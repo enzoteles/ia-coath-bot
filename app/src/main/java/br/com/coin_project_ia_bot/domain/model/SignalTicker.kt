@@ -14,6 +14,7 @@ data class SignalTicker(
     val timestamp: Long,
     val lastPrice: Float,
     val takeProfitPrice: String,
-    val stopLossPrice: String
+    val stopLossPrice: String,
+    val investmentPercent: Float,
 
 )

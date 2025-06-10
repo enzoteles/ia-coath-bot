@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:elevation="4dp"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvSymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SYMBOL"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score IA: 8/10"
+            android:paddingTop="4dp" />
+
+        <TextView
+            android:id="@+id/tvRsiBullish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RSI: 60.5 | Bullish: 4"
+            android:paddingTop="2dp" />
+
+        <TextView
+            android:id="@+id/tvTpSl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🎯 TP: 0.075 | 🛑 SL: 0.065"
+            android:paddingTop="2dp" />
+
+        <TextView
+            android:id="@+id/tvInvest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sugestão: até 25% do capital"
+            android:paddingTop="2dp"
+            android:textColor="#388E3C" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

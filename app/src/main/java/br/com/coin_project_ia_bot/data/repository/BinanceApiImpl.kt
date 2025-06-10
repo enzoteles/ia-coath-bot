@@ -1,5 +1,7 @@
-package br.com.coin_project_ia_bot
+package br.com.coin_project_ia_bot.data.repository
 
+import br.com.coin_project_ia_bot.data.api.BinanceApi
+import br.com.coin_project_ia_bot.data.model.Ticker
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

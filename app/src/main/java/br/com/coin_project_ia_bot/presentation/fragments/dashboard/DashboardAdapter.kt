@@ -4,10 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import br.com.coin_project_ia_bot.R
-import br.com.coin_project_ia_bot.Ticker
 import br.com.coin_project_ia_bot.databinding.ItemCoinBinding
 import br.com.coin_project_ia_bot.presentation.utils.formatAsCurrency
 

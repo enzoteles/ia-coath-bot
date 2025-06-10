@@ -3,7 +3,7 @@ package br.com.coin_project_ia_bot.presentation.utils
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import br.com.coin_project_ia_bot.BinanceApiImpl
+import br.com.coin_project_ia_bot.data.repository.BinanceApiImpl
 import br.com.coin_project_ia_bot.domain.model.SignalTicker
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.*
 import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer
@@ -64,7 +64,8 @@ class SignalWorker(
                                 stopLoss = "%.4f".format(stopLossPrice),
                                 lastPrice = currentPrice,
                                 takeProfitPrice = takeProfitPrice.toString(),
-                                stopLossPrice = stopLossPrice.toString()
+                                stopLossPrice = stopLossPrice.toString(),
+                                investmentPercent = 0f
                             )
 
                             sinais.add(signal)

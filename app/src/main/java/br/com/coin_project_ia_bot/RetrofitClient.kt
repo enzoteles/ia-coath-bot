@@ -1,5 +1,6 @@
 package br.com.coin_project_ia_bot
 
+import br.com.coin_project_ia_bot.data.api.BinanceApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
