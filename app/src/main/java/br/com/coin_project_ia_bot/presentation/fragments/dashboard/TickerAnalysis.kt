@@ -4,8 +4,6 @@ import android.util.Log
 import br.com.coin_project_ia_bot.RetrofitInstance
 import br.com.coin_project_ia_bot.Ticker
 import br.com.coin_project_ia_bot.domain.model.Candle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 data class TickerAnalysis(
@@ -14,17 +12,31 @@ data class TickerAnalysis(
     val rsi: Float?,
     val bullishCount: Int,
     val change: Float,
-    val consistency: String? = null
-)
+    val consistency: String
+) {
+    val symbol: String get() = ticker.symbol
+}
 
 fun analyzeTicker(
     ticker: Ticker,
     closes: List<Float>,
     candles: List<Candle>
-): TickerAnalysis {
-    val change = ticker.priceChangePercent.toFloatOrNull() ?: return TickerAnalysis(ticker, 0f, null, 0, 0f)
-    val volume = ticker.volume.toFloatOrNull() ?: return TickerAnalysis(ticker, 0f, null, 0, change)
-    val price = ticker.lastPrice.toFloatOrNull() ?: return TickerAnalysis(ticker, 0f, null, 0, change)
+): TickerAnalysis? {
+    val symbol = ticker.symbol
+
+    if (closes.size < 15) {
+        Log.w("Analyzer", "Closes insuficientes para $symbol")
+        return null
+    }
+
+    if (candles.size < 5) {
+        Log.w("Analyzer", "Candles insuficientes para $symbol")
+        return null
+    }
+
+    val change = ticker.priceChangePercent.toFloatOrNull() ?: return null
+    val volume = ticker.volume.toFloatOrNull() ?: return null
+    val price = ticker.lastPrice.toFloatOrNull() ?: return null
     val high = ticker.highPrice.toFloatOrNull() ?: 0f
     val low = ticker.lowPrice.toFloatOrNull() ?: 0f
     val priceRange = if (price != 0f) (high - low) / price else 0f
@@ -35,31 +47,49 @@ fun analyzeTicker(
 
     var score = 0f
 
-    if (change in 2f..5f) score += 2.5f
-    else if (change > 5f) score += 3.5f
-
-    if (volume > 1_000_000f) score += 2.5f
-    else if (volume > 500_000f) score += 1.5f
-
-    if (rsi != null) {
-        if (rsi in 55f..70f) score += 1.5f
-        else if (rsi > 70f) score += 2.5f
+    // Variação de preço
+    score += when {
+        change in 2f..5f -> 2.5f
+        change > 5f -> 3.5f
+        else -> 0f
     }
 
-    if (bullishCount >= 3) score += 1.0f
-    if (bullishCount >= 5) score += 2.0f
+    // Volume
+    score += when {
+        volume > 1_000_000f -> 2.5f
+        volume > 500_000f -> 1.5f
+        else -> 0f
+    }
 
+    // RSI
+    if (rsi != null) {
+        score += when {
+            rsi in 55f..70f -> 1.5f
+            rsi > 70f -> 2.5f
+            else -> 0f
+        }
+    }
+
+    // Candles de alta
+    score += when {
+        bullishCount >= 5 -> 2.0f
+        bullishCount >= 3 -> 1.0f
+        else -> 0f
+    }
+
+    // Amplitude do preço
     if (priceRange > 0.03f) score += 0.5f
 
     return TickerAnalysis(
         ticker = ticker,
-        score = score.coerceAtMost(10f),
+        score = score,
         rsi = rsi,
         bullishCount = bullishCount,
         change = change,
         consistency = consistency
     )
 }
+
 
 fun calculateRSI(closes: List<Float>, period: Int = 14): Float? {
     if (closes.size <= period) return null
@@ -100,7 +130,7 @@ fun parseCandles(rawKlines: List<List<String>>): List<Candle> {
                         close > 0 && open > 0
 
                 val isStrongCandle = open != null && close != null &&
-                        kotlin.math.abs(close - open) > (0.005f * close)
+                        kotlin.math.abs(close - open) > (0.005f * open)
 
                 if (isValid && isStrongCandle) {
                     Candle(open!!, high!!, low!!, close!!, volume!!)
@@ -130,7 +160,7 @@ suspend fun getCandlesForTicker(symbol: String): List<List<String>>? {
 suspend fun getClosesForTicker(symbol: String): List<Float> {
     return try {
         RetrofitInstance.api.getKlines(symbol, "1h", 50)
-            .mapNotNull { (it.getOrNull(4) as? String)?.toFloatOrNull() }
+            .mapNotNull { (it.getOrNull(4))?.toFloatOrNull() }
     } catch (e: Exception) {
         emptyList()
     }

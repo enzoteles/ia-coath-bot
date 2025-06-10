@@ -156,7 +156,7 @@ class MultiTFViewModel(
 
                     if (closes.isNotEmpty() && candles.isNotEmpty()) {
                         val analysis = analyzeTicker(ticker, closes, candles)
-                        if (analysis.score >= 7) {
+                        if (analysis?.score!! >= 7) {
                             analyses.add(analysis)
                         }
                     } else {

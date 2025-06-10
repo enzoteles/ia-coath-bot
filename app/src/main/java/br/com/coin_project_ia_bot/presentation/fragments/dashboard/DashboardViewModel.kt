@@ -14,7 +14,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-const val QTD_COIN = 50
+const val QTD_COIN = 100
 class DashboardViewModel : ViewModel() {
 
     private val _analyzedTickers = MutableLiveData<List<TickerAnalysis>>()
@@ -36,7 +36,7 @@ class DashboardViewModel : ViewModel() {
                                 if (closes != null && candles != null) {
                                     val parsedCandles = parseCandles(candles)
                                     val analysis = analyzeTicker(ticker, closes, parsedCandles)
-                                    if (analysis.score >= minScore) analysis else null
+                                    if (analysis?.score!! >= minScore) analysis else null
                                 } else null
                             } catch (e: Exception) {
                                 Log.w("TickerFail", "Erro ao analisar ${ticker.symbol}: ${e.message}")

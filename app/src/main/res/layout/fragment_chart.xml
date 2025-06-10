@@ -5,8 +5,27 @@ android:layout_height="match_parent"
 android:orientation="vertical"
 android:padding="16dp">
 
-<com.github.mikephil.charting.charts.LineChart
-    android:id="@+id/lineChart"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!-- Barra de progresso para quando estiver carregando -->
+    <ProgressBar
+        android:id="@+id/progressLoading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
+
+    </FrameLayout>
+
+
 </LinearLayout>

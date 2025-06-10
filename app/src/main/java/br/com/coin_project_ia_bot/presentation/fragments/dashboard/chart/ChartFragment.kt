@@ -1,12 +1,12 @@
 package br.com.coin_project_ia_bot.presentation.fragments.dashboard.chart
 
-import androidx.fragment.app.Fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import br.com.coin_project_ia_bot.databinding.FragmentChartBinding
 import br.com.coin_project_ia_bot.presentation.fragments.dashboard.DashboardViewModel
@@ -14,7 +14,8 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 
 // ChartFragment.kt
 class ChartFragment : Fragment() {
@@ -30,32 +31,97 @@ class ChartFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchAndScoreTickers()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupChartStyle()
 
         viewModel.analyzedTickers.observe(viewLifecycleOwner) { tickers ->
-            if (tickers.isNullOrEmpty()) return@observe
+            if (tickers.isNullOrEmpty()) {
+                Log.w("ChartFragment", "Sem dados para exibir")
+                binding.lineChart.clear()
+                binding.lineChart.setNoDataText("Sem dados disponíveis.")
+                binding.progressLoading.visibility = View.VISIBLE
+                binding.lineChart.visibility = View.GONE
+                return@observe
+            }
 
             val top = tickers.take(10)
-            val scoreEntries = top.mapIndexed { index, t -> Entry(index.toFloat(), t.score.toFloat()) }
+            Log.d("ChartFragment", "Renderizando ${top.size} moedas")
+
+            val scoreEntries = top.mapIndexed { index, t ->
+                Log.d("ChartFragment", "Score ${t.ticker.symbol}: ${t.score}")
+                Entry(index.toFloat(), t.score)
+            }
+
             val rsiEntries = top.mapIndexedNotNull { index, t ->
-                t.rsi?.let { Entry(index.toFloat(), it) }
+                t.rsi?.let {
+                    Log.d("ChartFragment", "RSI ${t.ticker.symbol}: $it")
+                    Entry(index.toFloat(), it)
+                }
             }
 
             val scoreDataSet = LineDataSet(scoreEntries, "Score").apply {
-                color = Color.BLUE
-                setCircleColor(Color.BLUE)
+                setDrawValues(true)
+                valueTextSize = 10f
+                valueFormatter = object : ValueFormatter() {
+                    override fun getPointLabel(entry: Entry?): String {
+                        return entry?.y?.toString() ?: ""
+                    }
+                }
+            }
+            val rsiDataSet = buildDataSet(rsiEntries, "RSI", Color.GREEN)
+
+            Log.d("ChartFragment", "ScoreEntries: ${scoreDataSet.entryCount}, RSIEntries: ${rsiDataSet.entryCount}")
+
+            binding.lineChart.apply {
+                data = LineData(scoreDataSet, rsiDataSet)
+                xAxis.valueFormatter = IndexAxisValueFormatter(top.map { it.symbol })
+                xAxis.labelCount = top.size
+                xAxis.labelRotationAngle = -45f
+                invalidate()
+                binding.progressLoading.visibility = View.GONE
+                binding.lineChart.visibility = View.VISIBLE
+            }
+        }
+
+    }
+
+    private fun buildDataSet(entries: List<Entry>, label: String, color: Int): LineDataSet {
+        return LineDataSet(entries, label).apply {
+            setDrawValues(true)
+            setDrawCircles(true)
+            setCircleColor(color)
+            setColor(color)
+            lineWidth = 2f
+            circleRadius = 4f
+            valueTextSize = 10f
+        }
+    }
+
+    private fun setupChartStyle() {
+        binding.lineChart.apply {
+            description.isEnabled = false
+            setTouchEnabled(true)
+            setPinchZoom(true)
+            axisRight.isEnabled = false
+
+            xAxis.apply {
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = 1f
+                setDrawGridLines(false)
             }
 
-            val rsiDataSet = LineDataSet(rsiEntries, "RSI").apply {
-                color = Color.GREEN
-                setCircleColor(Color.GREEN)
+            axisLeft.apply {
+                granularity = 1f
+                setDrawGridLines(true)
             }
 
-            val data = LineData(scoreDataSet, rsiDataSet)
-            binding.lineChart.data = data
-            binding.lineChart.description.text = "Pontuação e RSI das Top Moedas"
-            binding.lineChart.invalidate()
+            legend.isEnabled = true
         }
     }
 
