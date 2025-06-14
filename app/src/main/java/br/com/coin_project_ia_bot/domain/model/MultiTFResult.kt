@@ -11,5 +11,8 @@ data class MultiTFResult(
     var takeProfit: String,
     var stopLoss: String,
     var lastPrice : Float,
+    var takeProfitValue : Float,
+    var stopLossValue : Float,
+    var idealEntryValue : Double,
 )
 

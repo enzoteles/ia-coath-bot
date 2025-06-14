@@ -79,7 +79,10 @@ class MultiTFViewModel(
                             bullishCount = bullishCount,
                             takeProfit = "TP: +${"%.2f".format(tpPercent)}% (≈ ${"%.4f".format(takeProfitPrice)})",
                             stopLoss = "SL: -${"%.2f".format(slPercent)}% (≈ ${"%.4f".format(stopLossPrice)})",
-                            lastPrice = ticker.lastPrice.toFloatOrNull() ?: 0f
+                            lastPrice = ticker.lastPrice.toFloatOrNull() ?: 0f,
+                            takeProfitValue = 3f,
+                            stopLossValue = 3f,
+                            idealEntryValue = 3.0
                         )
                     )
                 }

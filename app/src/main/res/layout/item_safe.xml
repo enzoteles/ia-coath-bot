@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@android:color/white">
+
+    <TextView android:id="@+id/symbolText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="MOEDA"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+
+    <TextView android:id="@+id/tpText"
+        android:text="TP: +4.5%" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+
+    <TextView android:id="@+id/slText"
+        android:text="SL: -1.5%" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+
+    <TextView android:id="@+id/entryValueText"
+        android:text="Entrada ideal: US$ 66.66"
+        android:textStyle="italic" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+
+    <Button
+        android:id="@+id/copyButton"
+        android:text="Copiar OCO" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+</LinearLayout>
+
