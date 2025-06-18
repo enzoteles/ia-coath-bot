@@ -5,5 +5,6 @@ data class Candle(
     val close: Float,
     val high: Float,
     val low: Float,
-    val volume: Float
+    val volume: Float,
+    val openTime: Long
 )

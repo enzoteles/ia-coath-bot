@@ -1,6 +1,8 @@
 package br.com.coin_project_ia_bot.data.api
 
+import br.com.coin_project_ia_bot.data.model.OrderBookResponse
 import br.com.coin_project_ia_bot.data.model.Ticker
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -15,4 +17,9 @@ interface BinanceApi {
         @Query("limit") limit: Int
     ): List<List<String>>
 
+    @GET("api/v3/depth")
+    suspend fun getOrderBook(
+        @Query("symbol") symbol: String,
+        @Query("limit") limit: Int = 10
+    ): Response<OrderBookResponse>
 }

@@ -7,9 +7,10 @@
     android:background="#F5F5F5">
 
     <TextView
+        android:id="@+id/tituloSafe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sinais de Compra Seguros"
+        android:text="Sinais de Compra Seguros: %s"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
@@ -26,6 +27,28 @@
         android:layout_height="wrap_content"
         android:text="Executar Backtest"
         android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnBacktestAvancado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Backtest Avançado Multi-Dias"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnExportJSON"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exportar Backtest em JSON"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/btnExportCSV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exportar Backtest em CSV"
+        android:layout_marginBottom="8dp"/>
+
 
     <TextView
         android:id="@+id/txtResultadoBacktest"

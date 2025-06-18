@@ -1,7 +1,9 @@
 package br.com.coin_project_ia_bot.data.repository
 
 import br.com.coin_project_ia_bot.data.api.BinanceApi
+import br.com.coin_project_ia_bot.data.model.OrderBookResponse
 import br.com.coin_project_ia_bot.data.model.Ticker
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -20,5 +22,9 @@ class BinanceApiImpl : BinanceApi {
 
     override suspend fun getKlines(symbol: String, interval: String, limit: Int): List<List<String>> {
         return service.getKlines(symbol, interval, limit)
+    }
+
+    override suspend fun getOrderBook(symbol: String, limit: Int): Response<OrderBookResponse> {
+        return service.getOrderBook(symbol, limit)
     }
 }

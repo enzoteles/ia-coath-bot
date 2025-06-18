@@ -13,7 +13,8 @@ class CoinAnalyzer(private val api: BinanceApi) {
                     close = it[4].toFloat(),
                     high = it[2].toFloat(),
                     low = it[3].toFloat(),
-                    volume = it[5].toFloat()
+                    volume = it[5].toFloat(),
+                    openTime = it[6].toLong()
                 )
             }
         } catch (e: Exception) {

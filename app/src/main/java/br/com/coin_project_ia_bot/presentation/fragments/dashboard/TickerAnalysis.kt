@@ -123,6 +123,7 @@ fun parseCandles(rawKlines: List<List<String>>): List<Candle> {
                 val low = kline[3].toFloatOrNull()
                 val close = kline[4].toFloatOrNull()
                 val volume = kline[5].toFloatOrNull()
+                val timestamp = kline[6].toFloatOrNull()
 
                 val isValid = open != null && high != null && low != null && close != null && volume != null &&
                         volume > 1000f &&
@@ -133,7 +134,7 @@ fun parseCandles(rawKlines: List<List<String>>): List<Candle> {
                         kotlin.math.abs(close - open) > (0.005f * open)
 
                 if (isValid && isStrongCandle) {
-                    Candle(open!!, high!!, low!!, close!!, volume!!)
+                    Candle(open!!, high!!, low!!, close!!, volume!!, timestamp!!.toLong())
                 } else {
                     Log.w("parseCandles", "Candle inválido[$index]: $kline")
                     null
@@ -165,6 +166,8 @@ suspend fun getClosesForTicker(symbol: String, interval: String = "1h", limit: I
         emptyList()
     }
 }
+
+
 
 fun calculateConsistency(
     rsi: Float?,

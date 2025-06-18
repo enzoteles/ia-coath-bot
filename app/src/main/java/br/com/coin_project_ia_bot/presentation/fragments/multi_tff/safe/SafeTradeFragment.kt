@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.coin_project_ia_bot.R
 
 import androidx.lifecycle.lifecycleScope
+import br.com.coin_project_ia_bot.data.model.BacktestTradeResult
 import kotlinx.coroutines.launch
 
 class SafeTradeFragment : Fragment() {
@@ -32,6 +33,24 @@ class SafeTradeFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[SafeTradeViewModel::class.java]
         adapter = SafeSignalsAdapter()
+
+        /*val recomendacao = viewModel.getTradeRecommendation()
+        val textView = view.findViewById<TextView>(R.id.tituloSafe)
+        textView.text = "Sinais de Compra Seguros:\n$recomendacao"*/
+
+       /* lifecycleScope.launch {
+            val recommendation = viewModel.getSmartTradeRecommendation("BTCUSDT")
+            val textView = view.findViewById<TextView>(R.id.tituloSafe)
+            textView.text = "Sinais de Compra Seguros:\n$recommendation"
+        }*/
+
+        viewModel.getTradeRecommendationLive("BTCUSDT") { recommendation ->
+            val textView = view.findViewById<TextView>(R.id.tituloSafe)
+            textView.text = "Sinais de Compra Seguros:\n$recommendation"
+        }
+
+
+
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerSafeSignals)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -72,5 +91,62 @@ class SafeTradeFragment : Fragment() {
             }
         }
 
+        val btnBacktestAvancado = view.findViewById<Button>(R.id.btnBacktestAvancado)
+        val btnExportJSON = view.findViewById<Button>(R.id.btnExportJSON)
+        val btnExportCSV = view.findViewById<Button>(R.id.btnExportCSV)
+
+        // Lista para armazenar o resultado do último backtest
+        var lastTrades: List<BacktestTradeResult> = emptyList()
+
+        btnBacktestAvancado.setOnClickListener {
+            lifecycleScope.launch {
+                txtResultado.text = "Rodando backtest avançado, aguarde..."
+                val (result, trades) = viewModel.runMultiDayBacktestWithTrades()
+                lastTrades = trades
+                val resumo = """
+            ✅ Backtest Multi-Dias:
+            • Total de Trades: ${result.totalTrades}
+            • Acertos: ${result.wins}
+            • Erros: ${result.losses}
+            • Acurácia: ${result.accuracy}%
+            • Lucro Simulado: US$ ${"%.2f".format(result.profitUSDT)}
+        """.trimIndent()
+                txtResultado.text = resumo
+            }
+        }
+
+        btnExportJSON.setOnClickListener {
+            lifecycleScope.launch {
+                if (lastTrades.isNotEmpty()) {
+                    val path = viewModel.exportBacktestToJSON(lastTrades, requireContext())
+                    Toast.makeText(requireContext(), "JSON salvo em: $path", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(requireContext(), "Rode um backtest primeiro", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        btnExportCSV.setOnClickListener {
+            lifecycleScope.launch {
+                if (lastTrades.isNotEmpty()) {
+                    val path = viewModel.exportBacktestToCSV(lastTrades, requireContext())
+                    Toast.makeText(requireContext(), "CSV salvo em: $path", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(requireContext(), "Rode um backtest primeiro", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            val (_, trades) = viewModel.runMultiDayBacktestWithTrades()
+
+            val jsonExport = viewModel.exportTradesToJson(trades)
+            viewModel.saveToFile(requireContext(), "backtest_result.json", jsonExport)
+
+            val csvExport = viewModel.exportTradesToCSV(trades)
+            viewModel.saveToFile(requireContext(), "backtest_result.csv", csvExport)
+
+            Toast.makeText(requireContext(), "Exportado com sucesso!", Toast.LENGTH_SHORT).show()
+        }
     }
 }
