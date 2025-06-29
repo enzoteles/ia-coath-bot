@@ -42,7 +42,7 @@ class StarFragment : Fragment() {
         binding.rvDashboard.adapter = adapter
 
         // Observa a nova lista com análise
-        mainViewModel.analyzedTickers.observe(viewLifecycleOwner) { allTickers ->
+        /*mainViewModel.analyzedTickers.observe(viewLifecycleOwner) { allTickers ->
 
             val highConfidenceList = allTickers
                 .filter { it.consistency == "Alta Consistência ✅" }
@@ -57,8 +57,22 @@ class StarFragment : Fragment() {
                 adapter.updateList(highConfidenceList)
             }
             binding.progressLoading.visibility = View.GONE
-        }
+        }*/
 
+        mainViewModel.analyzedTickers.observe(viewLifecycleOwner) { allTickers ->
+
+            if (allTickers.isEmpty()) {
+                binding.tvMsgErro.text = "⚠️ O mercado está em queda ou sem oportunidades seguras no momento. Sugerimos manter em Stablecoin (ex: USDT)."
+                binding.tvMsgErro.visibility = View.VISIBLE
+                binding.rvDashboard.visibility = View.GONE
+            } else {
+                binding.tvMsgErro.text = ""
+                binding.tvMsgErro.visibility = View.GONE
+                binding.rvDashboard.visibility = View.VISIBLE
+                adapter.updateList(allTickers)
+            }
+            binding.progressLoading.visibility = View.GONE
+        }
 
         binding.progressLoading.visibility = View.VISIBLE
         Handler(Looper.getMainLooper()).postDelayed( {

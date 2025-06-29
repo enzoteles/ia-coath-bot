@@ -10,11 +10,11 @@ import br.com.coin_project_ia_bot.data.model.Ticker
 import br.com.coin_project_ia_bot.domain.model.Candle
 import br.com.coin_project_ia_bot.domain.model.MultiTFResult
 import br.com.coin_project_ia_bot.data.api.CoinGeckoInstance
-import br.com.coin_project_ia_bot.presentation.fragments.dashboard.calculateRSI
-import br.com.coin_project_ia_bot.presentation.fragments.dashboard.countBullishCandles
-import br.com.coin_project_ia_bot.presentation.fragments.dashboard.getCandlesForTicker
-import br.com.coin_project_ia_bot.presentation.fragments.dashboard.getClosesForTicker
-import br.com.coin_project_ia_bot.presentation.fragments.dashboard.parseCandles
+import br.com.coin_project_ia_bot.presentation.utils.calculateRSI
+import br.com.coin_project_ia_bot.presentation.utils.countBullishCandles
+import br.com.coin_project_ia_bot.presentation.utils.getCandlesForTicker
+import br.com.coin_project_ia_bot.presentation.utils.getClosesForTicker
+import br.com.coin_project_ia_bot.presentation.utils.parseCandles
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

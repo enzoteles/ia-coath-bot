@@ -5,7 +5,6 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.coin_project_ia_bot.data.repository.BinanceApiImpl
 import br.com.coin_project_ia_bot.domain.model.SignalTicker
-import br.com.coin_project_ia_bot.presentation.fragments.dashboard.*
 import br.com.coin_project_ia_bot.presentation.fragments.signal.CoinAnalyzer
 import br.com.coin_project_ia_bot.presentation.fragments.signal.manually.SharedPairsViewModel
 

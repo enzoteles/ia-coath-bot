@@ -1,4 +1,4 @@
-package br.com.coin_project_ia_bot.presentation.fragments.dashboard
+package br.com.coin_project_ia_bot.presentation.utils
 
 import android.util.Log
 import br.com.coin_project_ia_bot.RetrofitInstance

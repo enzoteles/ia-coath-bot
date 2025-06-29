@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.coin_project_ia_bot.databinding.ItemCoinBinding
+import br.com.coin_project_ia_bot.presentation.utils.TickerAnalysis
 import br.com.coin_project_ia_bot.presentation.utils.formatAsCurrency
 
 class DashboardAdapter(private var analyses: List<TickerAnalysis>) :

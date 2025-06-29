@@ -7,6 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.coin_project_ia_bot.RetrofitInstance
 import br.com.coin_project_ia_bot.presentation.MainActivity.Companion.USDT
+import br.com.coin_project_ia_bot.presentation.utils.TickerAnalysis
+import br.com.coin_project_ia_bot.presentation.utils.analyzeTicker
+import br.com.coin_project_ia_bot.presentation.utils.getCandlesForTicker
+import br.com.coin_project_ia_bot.presentation.utils.getClosesForTicker
+import br.com.coin_project_ia_bot.presentation.utils.parseCandles
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
