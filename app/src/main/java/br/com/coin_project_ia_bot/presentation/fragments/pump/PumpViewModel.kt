@@ -29,7 +29,7 @@ class PumpViewModel(private val api: BinanceApi) : ViewModel() {
             val results = mutableListOf<PumpTicker>()
             for (ticker in tickers) {
                 try {
-                    val candles = analyzer.getCandles(ticker.symbol, "1m", 120)
+                    val candles = analyzer.getCandles(ticker.symbol, "1m", 60)
                     val change = analyzer.variationPercent(candles)
                     if (change >= 10f) {
                         results.add(PumpTicker(ticker.symbol, change))

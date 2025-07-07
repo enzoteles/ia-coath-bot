@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:visibility="gone"
             android:clipToPadding="false"
             android:paddingBottom="8dp" />
 
@@ -36,6 +37,67 @@
             android:visibility="gone"
             android:paddingBottom="8dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:layout_gravity="top">
+            <Button
+                android:id="@+id/btnGerarPergunta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="bottom"
+                android:visibility="gone"
+                android:text="Gerar Pergunta para IA" />
+
+            <Button
+                android:id="@+id/btnGerarPerguntaHedge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🔮 Gerar Análise Nível 99% Hedge"
+                android:visibility="gone"
+                android:layout_marginTop="16dp"/>
+
+            <Button
+                android:id="@+id/btnGerarPerguntaEstrategia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🎯 Gerar pergunta para IA com base na estratégia"
+                android:layout_marginTop="12dp"/>
+
+            <Button
+                android:id="@+id/btnAbrirChatGPT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💬 Usar Pergunta no ChatGPT"
+                android:layout_marginTop="12dp"/>
+
+
+            <Button
+                android:id="@+id/btnPerguntaMutual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="🔎 Gerar Pergunta Nível 99% para IA Mutual"
+                android:layout_marginTop="16dp"/>
+
+
+            <TextView
+                android:id="@+id/tvResumoEstrategia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:background="#FFF8DC"
+                android:padding="12dp"
+                android:visibility="gone"
+                android:layout_marginTop="16dp"/>
+
+
+        </LinearLayout>
 
 
     </FrameLayout>

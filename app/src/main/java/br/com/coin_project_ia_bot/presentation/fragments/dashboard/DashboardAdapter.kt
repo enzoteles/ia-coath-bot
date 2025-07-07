@@ -32,12 +32,15 @@ class DashboardAdapter(private var analyses: List<TickerAnalysis>) :
             binding.score.text = "Score: ${analyses.score}/10"
             binding.rsi.text = "RSI: ${"%.1f".format(analyses.rsi ?: 0f)}"
             binding.bullishCount.text = "Candles de Alta: ${analyses.bullishCount}"
+            binding.operationType.text = "Tipo: ${analyses.operationType}"
+
 
             val change = ticker.priceChangePercent.toFloatOrNull() ?: 0f
             val price = ticker.lastPrice.toFloatOrNull() ?: 0f
             val high = ticker.highPrice.toFloatOrNull() ?: 0f
             val low = ticker.lowPrice.toFloatOrNull() ?: 0f
             val rangePercent = if (price != 0f) (high - low) / price else 0f
+
 
             when (analyses.consistency) {
                 "Alta Consistência ✅" -> {

@@ -12,10 +12,12 @@ data class TickerAnalysis(
     val rsi: Float?,
     val bullishCount: Int,
     val change: Float,
-    val consistency: String
+    val consistency: String,
+    val operationType: String
 ) {
     val symbol: String get() = ticker.symbol
 }
+
 
 fun analyzeTicker(
     ticker: Ticker,
@@ -80,13 +82,24 @@ fun analyzeTicker(
     // Amplitude do preço
     if (priceRange > 0.03f) score += 0.5f
 
+    val isSwing = candles.size >= 48 && (rsi!! in 45f..60f) && volume > 1_000_000
+    val isDayTrade = (change > 2f) && (bullishCount >= 3) && volume > 500_000
+
+    val operationType = when {
+        isSwing -> "Swing Trade"
+        isDayTrade -> "Day Trade"
+        else -> "Indefinido"
+    }
+
+
     return TickerAnalysis(
         ticker = ticker,
         score = score,
         rsi = rsi,
         bullishCount = bullishCount,
         change = change,
-        consistency = consistency
+        consistency = consistency,
+        operationType = operationType
     )
 }
 

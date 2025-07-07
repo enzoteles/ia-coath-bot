@@ -10,15 +10,23 @@
         android:id="@+id/tituloSafe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sinais de Compra Seguros: %s"
+        android:text="Sinais de Compra Seguros"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
+
     <Button
         android:id="@+id/btnAtualizarSinais"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Atualizar Sinais Manualmente"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnStartAutoUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Iniciar Atualização Automática"
         android:layout_marginBottom="12dp" />
 
     <Button
@@ -28,46 +36,20 @@
         android:text="Executar Backtest"
         android:layout_marginBottom="12dp" />
 
-    <Button
-        android:id="@+id/btnBacktestAvancado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Backtest Avançado Multi-Dias"
-        android:layout_marginBottom="12dp" />
-
-    <Button
-        android:id="@+id/btnExportJSON"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Exportar Backtest em JSON"
-        android:layout_marginBottom="8dp"/>
-
-    <Button
-        android:id="@+id/btnExportCSV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Exportar Backtest em CSV"
-        android:layout_marginBottom="8dp"/>
-
-
-    <TextView
-        android:id="@+id/txtResultadoBacktest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Resultado do Backtest aparecerá aqui"
-        android:textStyle="italic"
-        android:padding="8dp"
-        android:background="#EFEFEF"
-        android:textSize="14sp"
-        android:layout_marginBottom="12dp"/>
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSafeSignals"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp" />
 
-
-
+    <TextView
+        android:id="@+id/txtBacktestResumo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Resultado do Backtest aparecerá aqui"
+        android:textSize="14sp"
+        android:textColor="#333"
+        android:paddingTop="12dp"
+        android:visibility="gone" />
 </LinearLayout>

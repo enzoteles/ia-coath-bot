@@ -26,6 +26,6 @@ class PumpAdapter(private val pumps: List<PumpTicker>) : RecyclerView.Adapter<Pu
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = pumps[position]
         holder.symbol.text = item.symbol
-        holder.change.text = "🚀 +%.2f%% nas últimas 2h".format(item.variation2h)
+        holder.change.text = "🚀 +%.2f%% na última 1h".format(item.variation2h)
     }
 }

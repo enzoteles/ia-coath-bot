@@ -1,7 +1,9 @@
 package br.com.coin_project_ia_bot.presentation.utils
 
 import br.com.coin_project_ia_bot.data.api.BinanceApi
+import br.com.coin_project_ia_bot.domain.model.Candle
 import br.com.coin_project_ia_bot.domain.model.TrendAnalysisResult
+import br.com.coin_project_ia_bot.presentation.fragments.multi_tff.safe.TAUtils.calculateEMA
 
 class TrendAIAnalyzer(private val api: BinanceApi) {
 
