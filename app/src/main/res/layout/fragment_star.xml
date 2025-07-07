@@ -38,26 +38,30 @@
             android:paddingBottom="8dp" />
 
         <LinearLayout
+            android:id="@+id/layoutButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_gravity="top">
-            <Button
-                android:id="@+id/btnGerarPergunta"
+
+            <TextView
+                android:id="@+id/tvResumoEstrategia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="bottom"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:background="#FFF8DC"
+                android:padding="12dp"
                 android:visibility="gone"
-                android:text="Gerar Pergunta para IA" />
+                android:layout_marginTop="16dp"/>
 
             <Button
                 android:id="@+id/btnGerarPerguntaHedge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="🔮 Gerar Análise Nível 99% Hedge"
-                android:visibility="gone"
                 android:layout_marginTop="16dp"/>
 
             <Button
@@ -79,23 +83,8 @@
                 android:id="@+id/btnPerguntaMutual"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:text="🔎 Gerar Pergunta Nível 99% para IA Mutual"
                 android:layout_marginTop="16dp"/>
-
-
-            <TextView
-                android:id="@+id/tvResumoEstrategia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#333333"
-                android:textStyle="bold"
-                android:background="#FFF8DC"
-                android:padding="12dp"
-                android:visibility="gone"
-                android:layout_marginTop="16dp"/>
-
 
         </LinearLayout>
 

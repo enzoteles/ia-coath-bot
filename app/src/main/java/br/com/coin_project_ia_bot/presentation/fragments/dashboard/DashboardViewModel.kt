@@ -38,7 +38,6 @@ class DashboardViewModel : ViewModel() {
     val volatilidadeAtual: LiveData<String> = _volatilidadeAtual
 
 
-
     fun fetchAndScoreTickers(minScore: Int = 7) {
         viewModelScope.launch {
             try {
@@ -80,57 +79,13 @@ class DashboardViewModel : ViewModel() {
                 }
 
 
+
+
+
             } catch (e: Exception) {
                 Log.e("ViewModel", "Falha geral: ${e.message}")
             }
         }
-    }
-
-    fun gerarPerguntaParaIA(tickers: List<TickerAnalysis>): String {
-        val candidatos = tickers.filter {
-            val volume = it.ticker.quoteVolume.toFloatOrNull() ?: 0f
-            val rsi = it.rsi ?: 0f
-            val change = it.change
-
-            volume > 50_000_000 &&
-                    change in 2f..6f &&
-                    rsi in 55f..70f &&
-                    it.bullishCount >= 2
-        }.take(3)
-
-        if (candidatos.isEmpty()) return "Nenhuma moeda atende aos critérios no momento."
-
-        val moedasTexto = candidatos.joinToString("\n") { analysis ->
-            val tipo = analysis.operationType
-            val confianca = when {
-                analysis.score >= 9 -> "Alta (95%)"
-                analysis.score >= 7 -> "Média-Alta (85%)"
-                else -> "Moderada (70%)"
-            }
-
-            val symbol = analysis.ticker.symbol
-            val rsi = analysis.rsi?.let { "%.1f".format(it) } ?: "N/A"
-            val change = "%.2f".format(analysis.change)
-            val volume = "%.1fM".format((analysis.ticker.quoteVolume.toFloatOrNull() ?: 0f) / 1_000_000)
-
-            """
-        - $symbol
-          • Variação: $change%
-          • RSI: $rsi
-          • Volume: $volume USDT
-          • Tipo: $tipo
-          • Confiança: $confianca
-        """.trimIndent()
-        }
-
-        return """
-            Com base na análise técnica das criptomoedas listadas na Binance, identifiquei 3 moedas com potencial de valorização entre 3% e 5% nas próximas 6 horas. Os critérios considerados foram: RSI entre 55 e 70, candles de alta, variação positiva nas últimas 2 horas, tendência confirmada no H1 e volume acima de 50M USDT.
-
-            Aqui estão as moedas com maior probabilidade de sucesso:
-            $moedasTexto
-
-            Indico considerar essas opções para operações de curto prazo com boa relação risco-retorno.
-            """.trimIndent()
     }
 
     fun gerarPerguntaDeNivel99Hedge(tickers: List<TickerAnalysis>): String {
@@ -337,5 +292,17 @@ class DashboardViewModel : ViewModel() {
     }
 
 
+    //DETECTAR MERCADO
+    fun detectarCenarioDeMercado(globalData: List<TickerAnalysis>): String {
+        val btc = globalData.find { it.ticker.symbol == "BTCUSDT" } ?: return "Indefinido"
+        val eth = globalData.find { it.ticker.symbol == "ETHUSDT" } ?: return "Indefinido"
+        val mediaChange = (btc.change + eth.change) / 2
+
+        return when {
+            mediaChange >= 2.5 -> "Alta"
+            mediaChange <= -2.5 -> "Baixa"
+            else -> "Lateral"
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 package br.com.coin_project_ia_bot.presentation.fragments.dashboard.star
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -41,6 +42,7 @@ class StarFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -71,12 +73,12 @@ class StarFragment : Fragment() {
 
             if (allTickers.isEmpty()) {
                 binding.tvMsgErro.text = "⚠️ O mercado está em queda ou sem oportunidades seguras no momento. Sugerimos manter em Stablecoin (ex: USDT)."
-                binding.tvMsgErro.visibility = View.VISIBLE
+                binding.tvMsgErro.visibility = View.GONE
                 binding.rvDashboard.visibility = View.GONE
             } else {
                 binding.tvMsgErro.text = ""
                 binding.tvMsgErro.visibility = View.GONE
-                binding.rvDashboard.visibility = View.VISIBLE
+                binding.rvDashboard.visibility = View.GONE
                 adapter.updateList(allTickers)
             }
             binding.progressLoading.visibility = View.GONE
@@ -85,6 +87,8 @@ class StarFragment : Fragment() {
         mainViewModel.resumoEstrategia.observe(viewLifecycleOwner) { resumo ->
             binding.tvResumoEstrategia.text = resumo
             binding.tvResumoEstrategia.visibility = View.VISIBLE
+            binding.layoutButtons.visibility = View.VISIBLE
+
         }
 
 
@@ -94,7 +98,7 @@ class StarFragment : Fragment() {
             mainViewModel.fetchAndScoreTickers()
         },1000)
 
-        binding.btnGerarPergunta.setOnClickListener {
+        /*binding.btnGerarPergunta.setOnClickListener {
             val pergunta = mainViewModel.gerarPerguntaParaIA(mainViewModel.analyzedTickers.value ?: emptyList())
             AlertDialog.Builder(requireContext())
                 .setTitle("Pergunta para IA")
@@ -102,6 +106,9 @@ class StarFragment : Fragment() {
                 .setPositiveButton("OK", null)
                 .show()
         }
+
+        */
+
 
         binding.btnGerarPerguntaHedge.setOnClickListener {
             val pergunta = mainViewModel.gerarPerguntaDeNivel99Hedge(mainViewModel.analyzedTickers.value ?: emptyList())
@@ -168,21 +175,6 @@ class StarFragment : Fragment() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         }
-
-
-
-
-
-        val perguntaGerada = mainViewModel.gerarPerguntaParaIA(mainViewModel.analyzedTickers.value ?: emptyList())
-        Log.d("PerguntaIA", "MOEDAS:: $perguntaGerada")
-
-
-        val perguntaHedge = mainViewModel.gerarPerguntaDeNivel99Hedge(mainViewModel.analyzedTickers.value ?: emptyList())
-        Log.d("PerguntaIA", "HEDGE:: $perguntaHedge")
-
-        val perguntaMutual = mainViewModel.gerarPerguntaDeNivel99Hedge(mainViewModel.analyzedTickers.value ?: emptyList())
-        Log.d("PerguntaIA", "MUTUAL:: $perguntaMutual")
-
 
     }
 
