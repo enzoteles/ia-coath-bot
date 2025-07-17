@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/multiTimeframeFragment"
-        android:name="br.com.coin_project_ia_bot.presentation.fragments.multi_tff.safe.SafeTradeFragment"
+        android:name="br.com.coin_project_ia_bot.presentation.fragments.multi_tff.strategy.MarketStrategyFragment"
         android:label="Análise Multi-Timeframe" />
 
     <fragment

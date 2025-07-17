@@ -6,17 +6,18 @@ import br.com.coin_project_ia_bot.data.model.Ticker
 import br.com.coin_project_ia_bot.domain.model.Candle
 
 
-data class TickerAnalysis(
-    val ticker: Ticker,
-    val score: Float,
-    val rsi: Float?,
-    val bullishCount: Int,
-    val change: Float,
-    val consistency: String,
-    val operationType: String
-) {
-    val symbol: String get() = ticker.symbol
-}
+    data class TickerAnalysis(
+        val ticker: Ticker,
+        val score: Float,
+        val rsi: Float?,
+        val bullishCount: Int,
+        val change: Float,
+        val consistency: String,
+        val operationType: String,
+        val slippageMaximoEstimado: Float? = null
+    ) {
+        val symbol: String get() = ticker.symbol
+    }
 
 
 fun analyzeTicker(
@@ -99,7 +100,9 @@ fun analyzeTicker(
         bullishCount = bullishCount,
         change = change,
         consistency = consistency,
-        operationType = operationType
+        operationType = operationType,
+        slippageMaximoEstimado = 0.22f
+
     )
 }
 

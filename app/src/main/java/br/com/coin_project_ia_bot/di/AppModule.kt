@@ -6,6 +6,7 @@ import br.com.coin_project_ia_bot.presentation.fragments.dashboard.DashboardView
 import br.com.coin_project_ia_bot.presentation.fragments.multi_tff.MultiTFViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.multi_tff.MultiTimeframeViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.multi_tff.safe.SafeTradeViewModel
+import br.com.coin_project_ia_bot.presentation.fragments.multi_tff.strategy.MarketStrategyViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.pump.PumpViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.pump.alert.PumpAlertViewModel
 import br.com.coin_project_ia_bot.presentation.fragments.recommend.RecommendViewModel
@@ -21,6 +22,7 @@ val appModule = module {
     single<BinanceApi> { BinanceApiImpl() }
     viewModel { SharedPairsViewModel() }
     viewModel { DashboardViewModel() }
+    viewModel { MarketStrategyViewModel() }
     viewModel { MultiTimeframeViewModel() }
     viewModel { MultiTFViewModel(get()) }
     viewModel { SignalsViewModel(get(), get()) }

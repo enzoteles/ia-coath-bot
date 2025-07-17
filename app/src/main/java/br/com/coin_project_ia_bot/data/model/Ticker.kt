@@ -1,25 +1,30 @@
 package br.com.coin_project_ia_bot.data.model
 
+import androidx.lifecycle.viewmodel.CreationExtras
+const val EMPTY = ""
+const val EMPTY_INT = 0
+const val EMPTY_LONG = 0L
+
 data class Ticker(
-    val askPrice: String,
-    val askQty: String,
-    val bidPrice: String,
-    val bidQty: String,
-    val closeTime: Long,
-    val count: Int,
-    val firstId: String,
-    val highPrice: String,
-    val lastId: String,
-    val lastPrice: String,
-    val lastQty: String,
-    val lowPrice: String,
-    val openPrice: String,
-    val openTime: Long,
-    val prevClosePrice: String,
-    val priceChange: String,
-    val priceChangePercent: String,
-    val quoteVolume: String,
-    val symbol: String,
-    val volume: String,
-    val weightedAvgPrice: String,
+    val askPrice: String = EMPTY,
+    val askQty: String = EMPTY,
+    val bidPrice: String = EMPTY,
+    val bidQty: String = EMPTY,
+    val closeTime: Long = EMPTY_LONG,
+    val count: Int = EMPTY_INT,
+    val firstId: String = EMPTY,
+    val highPrice: String = EMPTY,
+    val lastId: String = EMPTY,
+    val lastPrice: String = EMPTY,
+    val lastQty: String = EMPTY,
+    val lowPrice: String = EMPTY,
+    val openPrice: String = EMPTY,
+    val openTime: Long = EMPTY_LONG,
+    val prevClosePrice: String = EMPTY,
+    val priceChange: String = EMPTY,
+    val priceChangePercent: String = EMPTY,
+    val quoteVolume: String = EMPTY,
+    val symbol: String = EMPTY,
+    val volume: String = EMPTY,
+    val weightedAvgPrice: String = EMPTY,
 )
